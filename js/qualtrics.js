@@ -521,6 +521,10 @@ function PERTS_MODULE() {
 
         options = options || {};
 
+        // Build a toggle so the user can turn the audio off? Assume yes.
+        if (options.createToggle !== false) {
+            createAudioToggle();
+        }
         // Should the audio immediately start to play? Assume yes.
         if (options.playImmediately !== false) {
             options.playImmediately = true;
@@ -528,10 +532,9 @@ function PERTS_MODULE() {
         // Never play immediately if this is a mobile device.
         if (p.isMobile()) {
             options.playImmediately = false;
-        }
-        // Build a toggle so the user can turn the audio off? Assume yes.
-        if (options.createToggle !== false) {
-            options.createToggle = true;
+            // Disable the toggle while the audio file loads. We'll enable it
+            // in the file load callback.
+            p.disableAudioToggle();
         }
 
         // This function supports two ways of playing audio.
@@ -573,6 +576,10 @@ function PERTS_MODULE() {
                 if (options.playImmediately) {
                     currentSoundInstance.play();
                 }
+                if (p.isMobile()) {
+                    // Now that the file is ready, let people toggle audio.
+                    p.enableAudioToggle();
+                }
             });
 
             // Register an audio file for loading and future playback in Sound.
@@ -592,11 +599,6 @@ function PERTS_MODULE() {
             // embed tag, so no sound needs to be registerd. The audioOn()
             // method can handle both ways of playing audio.
             p.audioOn();
-        }
-
-        // Create a button/toggle that allows the user to start/stop the audio
-        if (options.createToggle) {
-            createAudioToggle();
         }
     };
 
