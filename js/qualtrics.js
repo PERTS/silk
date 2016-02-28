@@ -18,7 +18,7 @@
 </script>
 <link href="//www.perts.net/static/silk/css/qualtrics.css" rel="stylesheet" />
 
-/*
+*/
 // Inlines several third-party libraries:
 // * jquery 1.11.0
 // * soundjs 0.6.2
