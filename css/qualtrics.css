@@ -573,7 +573,7 @@ a#BackButton:hover {
     position: absolute;
     top: 0px;
     left: -29px;
-    background-image: url("https://www.perts.net/static/images/perts-quote-mark.png");
+    background-image: url("/static/images/perts-quote-mark.png");
     background-repeat: no-repeat;
 }
 .perts-quote_body {
@@ -632,7 +632,7 @@ a#BackButton:hover {
     width: 400px;
 }
 .image-block#neuron-image {
-    background-image: url("https://www.perts.net/static/images/neuron-interactive.png");
+    background-image: url("/static/images/neuron-interactive.png");
     height: 680px;
     width: 500px;
     margin: 0px;
@@ -640,7 +640,7 @@ a#BackButton:hover {
     position: relative;
 }
 .image-block#brain-lobes {
-    background-image: url("https://www.perts.net/static/images/brain-lobes.png");
+    background-image: url("/static/images/brain-lobes.png");
     height: 680px;
     width: 500px;
     margin: 0px;
@@ -648,12 +648,12 @@ a#BackButton:hover {
     position: relative;
 }
 .image-block#equation-image {
-    background-image: url("https://www.perts.net/static/images/tough-equation.png");
+    background-image: url("/static/images/tough-equation.png");
     height: 310px;
     width: 250px;
 }
 .image-block#chile-data {
-    background-image: url("https://www.perts.net/static/images/chile-graph.png");
+    background-image: url("/static/images/chile-graph.png");
     background-color: #fff;
     height: 680px;
     padding-top: 30px;
@@ -661,13 +661,13 @@ a#BackButton:hover {
     margin: 0px;
 }
 .image-block#iphone-image {
-    background-image: url("https://www.perts.net/static/images/iphone.png");
+    background-image: url("/static/images/iphone.png");
     height: 300px;
     width: 250px;
     margin: 0px auto;
 }
 .image-block#michelle-image {
-    background-image: url("https://www.perts.net/static/images/michelle-obama.png");
+    background-image: url("/static/images/michelle-obama.png");
     height: 264px;
     width: 200px;
     margin: 40px auto;
@@ -829,13 +829,13 @@ a#BackButton:hover {
     padding: 0 5px;
 }
 .select-many_option .option-image#option-1 {
-    background-image: url('https://www.perts.net/static/images/option-1-fixed.png');
+    background-image: url('/static/images/option-1-fixed.png');
 }
 .select-many_option .option-image#option-2 {
-    background-image: url('https://www.perts.net/static/images/option-2-fixed.png');
+    background-image: url('/static/images/option-2-fixed.png');
 }
 .select-many_option .option-image#option-3 {
-    background-image: url('https://www.perts.net/static/images/option-3-fixed.png');
+    background-image: url('/static/images/option-3-fixed.png');
 }
 .smarter-option {
     display: inline-block;
@@ -847,11 +847,11 @@ a#BackButton:hover {
     overflow: hidden;
 }
 .smarter-option.smarter-option--1 {
-    background-image: url('https://www.perts.net/static/images/option-easy-work.png');
+    background-image: url('/static/images/option-easy-work.png');
     margin-left: 0px;
 }
 .smarter-option.smarter-option--2 {
-    background-image: url('https://www.perts.net/static/images/option-hard-work.png');
+    background-image: url('/static/images/option-hard-work.png');
     margin-right: 0px;
 }
 .smarter-option:hover .smarter-option_label {
