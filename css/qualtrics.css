@@ -1041,25 +1041,44 @@ a#BackButton:hover {
     }
 }
 
-/* iOS controls are bigger, so we need to adjust the ::after bits (which */
-/* skin the native controls by floating over them). */
 #SurveyEngineBody.iOS .Skin .MC input.checkbox::after {
     top: -1px;
     left: -1px;
-    height: 30px;
-    width: 30px;
+}
+#SurveyEngineBody.Android .Skin .MC input.checkbox::after {
+    top: -1px;
+    left: 0px;
 }
 
-#SurveyEngineBody.iOS  .Skin .MC td input[type="radio"]::after,
-#SurveyEngineBody.iOS  .Skin .MC li input[type="radio"]::after {
+#SurveyEngineBody.iOS .Skin .MC td input[type="radio"]::after,
+#SurveyEngineBody.iOS .Skin .MC li input[type="radio"]::after {
     top: -1px;
     left: -1px;
 }
+#SurveyEngineBody.Android .Skin .MC td input[type="radio"]::after,
+#SurveyEngineBody.Android .Skin .MC li input[type="radio"]::after {
+    top: -1px;
+    left: 0;
+}
+
+/* Mobile controls are bigger, so we need to adjust the ::after bits (which */
+/* skin the native controls by floating over them). */
 #SurveyEngineBody.iOS .Skin .MC input[type="radio"]::after,
 #SurveyEngineBody.Android .Skin .MC input[type="radio"]::after {
     height: 30px;
     width: 30px;
     border-radius: 15px;
+}
+#SurveyEngineBody.iOS .Skin .MC input.checkbox::after,
+#SurveyEngineBody.Android .Skin .MC input.checkbox::after {
+    height: 30px;
+    width: 30px;
+}
+
+#SurveyEngineBody.Android .Skin .MC td input[type="radio"]:checked:after,
+#SurveyEngineBody.Android .Skin .MC li input[type="radio"]:checked:after {
+    top: -2px;
+    left: -2px;
 }
 
 /* Qualtrics tries to put in a weird checkmark thingy in iPads. Kill it. */
@@ -1070,4 +1089,10 @@ a#BackButton:hover {
     /* Need to override Qualtrics Base styles */
     top: -1px;
     left: -1px;
+}
+
+/* Qualtrics adds weird list item markers using :before content on mobile */
+#SurveyEngineBody.iOS .Skin ul li:before,
+#SurveyEngineBody.Android .Skin ul li:before {
+    content: none;
 }
