@@ -670,8 +670,11 @@ function PERTS_MODULE() {
         // Makes sure that any flash players are removed from the page.
         p.audioOff();
 
-        // Makes sure any sounds registered with createjs are removed.
-        createjs.Sound.removeAllSounds();
+        // As long as this isn't IE 8 (which createjs doesn't support),
+        // make sure any sounds registered with createjs are removed.
+        if (typeof createjs !== 'undefined') {
+            createjs.Sound.removeAllSounds();
+        }
 
         // Under JFE, the DOM is constantly being replaced from page to page,
         // but the javascript environment is unchanged. That means DOM node
