@@ -712,6 +712,73 @@ function PERTS_MODULE() {
         }
     });
 
+    p.stratify = function (userId, programId, name, proportions, attributes, successCallback, errorCallback) {
+        var data = {
+            user: userId,
+            program: programId,
+            name: name,
+            proportions: JSON.stringify(proportions),
+            attributes: JSON.stringify(attributes)
+        };
+        p.jsonp('api/stratify/jsonp', data, function (condition) {
+            p.data('condition', condition);
+            successCallback(condition);
+        }, errorCallback);
+    };
+
+    p.jsonp = function (url, data, successCallback, errorCallback) {
+        // This function handles requesting data from the PERTS Platform over
+        // JSONP. It's designed to handle several failure cases gracefully:
+        //
+        // * Status 500 - the errorCallback function is called.
+        // * Server catches an exception and returns JSON with condition
+        //     '__ERROR__' - the errorCallback function is called.
+        // * Server takes over 4 seconds to respond - the errorCallback is
+        //     called
+        //
+        // In all of the above cases, the successCallback is NOT called.
+
+        // We expect the url to start w/ a slash
+        if (url.charAt(0) !== '/') {
+            url = '/' + url;
+        }
+        var noop = function () {};
+        errorCallback = errorCallback || noop;
+        var timeoutCallback = errorCallback;
+        var timeoutHandle;
+
+        // AJAX
+        $j.ajax({
+            url: p.domain() + url,
+            dataType: 'jsonp',
+            //// You can customize the name of the callback here, but it's
+            //// easier to let jQuery do it, because it adds magic debugging.
+            // jsonpCallback:,
+            data: data,
+            error: function (jqxhr, status, error) {
+                p.console.error("AJAX/JSONP error while stratifying:", status, error);
+                errorCallback();
+            },
+            success: function (response) {
+                if (response === '__ERROR__') {
+                    errorCallback();
+                } else {
+                    successCallback(response);
+                }
+            },
+            complete: function (jqxhr, status) {
+                clearTimeout(timeoutHandle);
+            }
+        });
+
+        // If the call takes too long, cancel any callbacks that might be
+        // triggered by the ajax function in the future, and do something else
+        // so the user isn't kept waiting.
+        timeoutHandle = setTimeout(function () {
+            successCallback = errorCallback = noop;
+            timeoutCallback();
+        }, 4000);
+    };
     return p;
 }
 
