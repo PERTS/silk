@@ -256,51 +256,72 @@ function PERTS_MODULE() {
         DOMInitialized = nextButton.length !== 0;
     };
 
+    var initializeDOMVamp = function(callback) {
+        initializeDOMReferences();
+        if (DOMInitialized) {
+            debugText += "\n DOM ready...";
+            callback();
+        } else {
+            debugText += "\n DOM wasn't ready, waiting...";
+            setTimeout(initializeDOMVamp, 100);
+        }
+    };
+
     // Must be run on page load, because it references the DOM.
-    var initializeBlockedNavigation = function () {
+    var initializeBlockedNavigation = function (callback) {
         debugText += "\n initializeBlockedNavigation()";
 
-        initializeDOMReferences();
-
-        var buttonContainer = $j('#Buttons');
-
-        // We'll play some games with vertical spacing that attempt to be
-        // robust, but if there's not enough margin-bottom on the button
-        // we'll run into problems. parseInt() strips the 'px'.
-        var marginBottom = parseInt(nextButton.css('margin-bottom'), 10);
-        if (marginBottom < 30) {
-            throw new Error("Can't replace next button: not enough " +
-                            "margin-bottom");
+        if (blockedNextButton) {
+            blockedNextButton.remove();
         }
-        // The new button with its associated message div will require
-        // 30 pixels of height. Size the remaining margin to fit.
-        marginBottom = marginBottom - 30;
+        if (blockedNavMessage) {
+            blockedNavMessage.remove();
+        }
 
-        // The only way to get rid of the original button that doesn't cause
-        // more problems is to give it display: none. Removing it from the DOM
-        // disrupts Qualtrics' internal ways of navigating, like the empty
-        // respose navigation check.
-        nextButton.hide();
+        initializeDOMVamp(function () {
 
-        // Insert a new next button so we can put our own event handlers on it.
-        // It's important to have the type NOT be "submit" b/c Qualtrics uses
-        // the onsubmit event to save the page's responses.
-        blockedNextButton = $j('<input class="perts-button blocked-next-button" type="button">')
-            .css('margin-bottom', marginBottom + 'px')
-            .appendTo(buttonContainer);
-        // Copy certain attributes over from the original button.
-        var attrToCopy = ['title', 'name', 'value'];
-        forEach(attrToCopy, function (attr) {
-            blockedNextButton.attr(attr, nextButton.attr(attr));
+            var buttonContainer = $j('#Buttons');
+
+            // We'll play some games with vertical spacing that attempt to be
+            // robust, but if there's not enough margin-bottom on the button
+            // we'll run into problems. parseInt() strips the 'px'.
+            var marginBottom = parseInt(nextButton.css('margin-bottom'), 10);
+            if (marginBottom < 30) {
+                throw new Error("Can't replace next button: not enough " +
+                                "margin-bottom");
+            }
+            // The new button with its associated message div will require
+            // 30 pixels of height. Size the remaining margin to fit.
+            marginBottom = marginBottom - 30;
+
+            // The only way to get rid of the original button that doesn't
+            // cause more problems is to give it display: none. Removing it
+            // from the DOM disrupts Qualtrics' internal ways of navigating,
+            // like the empty respose navigation check.
+            nextButton.hide();
+
+            // Insert a new next button so we can put our own event handlers on
+            // it. It's important to have the type NOT be "submit" b/c
+            // Qualtrics uses the onsubmit event to save the page's responses.
+            blockedNextButton = $j('<input class="perts-button blocked-next-button" type="button">')
+                .css('margin-bottom', marginBottom + 'px')
+                .appendTo(buttonContainer);
+            // Copy certain attributes over from the original button.
+            var attrToCopy = ['title', 'name', 'value'];
+            forEach(attrToCopy, function (attr) {
+                blockedNextButton.attr(attr, nextButton.attr(attr));
+            });
+
+            // Create a node that will contain a warning message if the user
+            // clicks the next button too fast.
+            blockedNavMessage = $j('<div class="blocked-nav-message">')
+                .css({'height': '20px',
+                      'margin-bottom': '10px',
+                      'text-align': 'center'})
+                .appendTo(buttonContainer);
+
+            callback();
         });
-
-        // Create a node that will contain a warning message if the user clicks
-        // the next button too fast.
-        blockedNavMessage = $j('<div>')
-            .css({'height': '20px',
-                  'margin-bottom': '10px',
-                  'text-align': 'center'})
-            .appendTo(buttonContainer);
     };
 
     // Setter/getter for the domain on which this javascript file is being
@@ -398,53 +419,54 @@ function PERTS_MODULE() {
 
         seconds = Number(seconds) || 0;
 
-        initializeDOMReferences();
+        initializeDOMVamp(function () {
 
-        var marginBottom = parseInt(nextButton.css('margin-bottom'), 10);
-        if (marginBottom === 0) {
-            // JFE doesn't apply styles synchronously, so we may have to wait
-            // a tick for the margins to exist.
-            setTimeout(function () {
-                perts.temporarilyBlockNavigation(message, seconds);
-            }, 100);
-            return;
-        }
+            var marginBottom = parseInt(nextButton.css('margin-bottom'), 10);
+            if (marginBottom === 0) {
+                // JFE doesn't apply styles synchronously, so we may have to wait
+                // a tick for the margins to exist.
+                setTimeout(function () {
+                    perts.temporarilyBlockNavigation(message, seconds);
+                }, 100);
+                return;
+            }
 
-        if (blockedNextButton) {
-            // Then this function has been run before on this page. We need to
-            // reset some things before moving forward.
-            blockedNextButton.unbind('click');
-            clearTimeout(blockedNavTimeout);
-            // The existing blocked button may have a different label. We'll
-            // regenerate it to make sure it's up to date.
-            $j('.blocked-next-button').remove();
-        }
+            if (blockedNextButton) {
+                // Then this function has been run before on this page. We need to
+                // reset some things before moving forward.
+                blockedNextButton.unbind('click');
+                clearTimeout(blockedNavTimeout);
+                // The existing blocked button may have a different label. We'll
+                // regenerate it to make sure it's up to date.
+                $j('.blocked-next-button').remove();
+            }
 
-        initializeBlockedNavigation();
+            initializeBlockedNavigation(function () {
 
-        // Explain to the user why clicking the next button isn't working.
-        blockedNextButton.click(function () {
-            blockedNavMessage.html(message);
+                // Explain to the user why clicking the next button isn't working.
+                blockedNextButton.click(function () {
+                    blockedNavMessage.html(message);
 
-            // Count how many times users click on the blocked button.
-            var count = Number(p.data('blocked_nav_count')) || 0;
-            p.data('blocked_nav_count', count + 1);
+                    // Count how many times users click on the blocked button.
+                    var count = Number(p.data('blocked_nav_count')) || 0;
+                    p.data('blocked_nav_count', count + 1);
+                });
+
+                // After the temporary period of time has passed, put the
+                // original button back in place.
+                blockedNavTimeout = setTimeout(p.removeNavigationBlock,
+                                               seconds * 1000);
+            });
         });
-
-        // After the temporary period of time has passed, put the
-        // original button back in place.
-        blockedNavTimeout = setTimeout(p.removeNavigationBlock,
-                                       seconds * 1000);
     };
 
     p.removeNavigationBlock = function () {
-        if (!blockedNextButton) {
-            initializeBlockedNavigation();
-        }
-        blockedNextButton.hide();
-        blockedNavMessage.hide();
-        nextButton.show();
-        clearTimeout(blockedNavTimeout);
+        initializeBlockedNavigation(function () {
+            blockedNextButton.hide();
+            blockedNavMessage.hide();
+            nextButton.show();
+            clearTimeout(blockedNavTimeout);
+        });
     };
 
     p.hideNextButton = function (seconds) {
