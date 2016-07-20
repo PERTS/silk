@@ -935,13 +935,6 @@ $j(document).keydown(function (e) {
 
 Qualtrics.SurveyEngine.addOnload(function () {
     'use strict';
-    // Temporary fix for a Qualtrics bug in JFE. Qualtrics incorrectly adds the
-    // class 'iOS' to the body tag in Chrome, regardless of actual device.
-    // If the user agent doesn't register as an iOS device, remove the class.
-    // @todo: remove this once Qualtrics has fixed the bug on their end.
-    if (!perts.is.iOS) {
-        $j(document.body).removeClass('iOS');
-    }
 
     // Connecting back button to the hidden "PreviousButton" IF there is one.
     // Sometimes Qualtrics doesn't provide a previous button because it would
