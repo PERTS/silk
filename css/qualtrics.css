@@ -397,7 +397,7 @@ a#BackButton:hover {
     font-size: 32px;
 }
 @media only screen and (max-device-width: 800px) {
-  #main-content, #splash-page {
+  .Skin #main-content, .Skin #splash-page {
     width: 100%;
   }
 }
@@ -1005,7 +1005,7 @@ a#BackButton:hover {
 }
 
 #SurveyEngineBody.iOS .Skin .MC input.checkbox::after {
-    left: -1px;
+    left: -10px;
 }
 #SurveyEngineBody.Android .Skin .MC input.checkbox::after {
     left: 0px;
@@ -1026,6 +1026,14 @@ a#BackButton:hover {
     top: -1px;
     left: -1px;
 }
+
+/* Overrides above for more space on lists */
+#SurveyEngineBody.iOS .Skin .MC .QuestionBody td input[type="radio"]::after,
+#SurveyEngineBody.iOS .Skin .MC .QuestionBody li input[type="radio"]::after {
+    top: 0;
+    left: -10px;
+}
+
 #SurveyEngineBody.Android .Skin .MC td input[type="radio"]::after,
 #SurveyEngineBody.Android .Skin .MC li input[type="radio"]::after {
     top: -1px;
@@ -1049,4 +1057,14 @@ a#BackButton:hover {
 #SurveyEngineBody.iOS .Skin ul li:before,
 #SurveyEngineBody.Android .Skin ul li:before {
     content: none;
+}
+
+/* Allows for scrolling MC questions on mobile devices */
+@media only screen and (max-device-width: 800px) {
+    .MC .InnerInner {
+        overflow-x: auto;
+        -webkit-overflow-scrolling;
+        -ms-overflow-style: auto;
+        -ms-overflow-x: auto;
+    }
 }
