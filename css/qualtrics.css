@@ -1059,12 +1059,22 @@ a#BackButton:hover {
     content: none;
 }
 
-/* Allows for scrolling MC questions on mobile devices */
-@media only screen and (max-device-width: 800px) {
-    .MC .InnerInner {
-        overflow-x: auto;
-        -webkit-overflow-scrolling;
-        -ms-overflow-style: auto;
-        -ms-overflow-x: auto;
+/* Override user agent stylesheets on mobile to allow scrolling within
+ * fieldset elements */
+fieldset {
+    min-width: 0;
+}
+@-moz-document url-prefix() {
+    fieldset {
+        display: table-cell;
     }
+}
+
+/* Allows for scrolling MC questions on mobile devices */
+#SurveyEngineBody.Android .Skin #Questions .QuestionOuter.MC fieldset .QuestionBody,
+#SurveyEngineBody.iOS .Skin #Questions .QuestionOuter.MC fieldset .QuestionBody {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: auto;
+    -ms-overflow-style: auto;
+    -ms-overflow-x: auto;
 }
