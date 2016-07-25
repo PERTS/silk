@@ -1005,7 +1005,7 @@ a#BackButton:hover {
 }
 
 #SurveyEngineBody.iOS .Skin .MC input.checkbox::after {
-    left: -10px;
+    left: -1px;
 }
 #SurveyEngineBody.Android .Skin .MC input.checkbox::after {
     left: 0px;
@@ -1025,13 +1025,6 @@ a#BackButton:hover {
 #SurveyEngineBody.iOS .Skin .MC li input[type="radio"]::after {
     top: -1px;
     left: -1px;
-}
-
-/* Overrides above for more space on lists */
-#SurveyEngineBody.iOS .Skin .MC .QuestionBody td input[type="radio"]::after,
-#SurveyEngineBody.iOS .Skin .MC .QuestionBody li input[type="radio"]::after {
-    top: 0;
-    left: -10px;
 }
 
 #SurveyEngineBody.Android .Skin .MC td input[type="radio"]::after,
