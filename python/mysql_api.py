@@ -1,4 +1,15 @@
-connection = None
+"""Convenience wrapper for MySQLdb."""
+
+import google.appengine.api.app_identity as app_identity
+import logging
+import MySQLdb
+import collections
+
+import util
+
+
+class Api():
+    connection = None
     cursor = None
 
     # Configurable on instantiation.
