@@ -1,15 +1,4 @@
-"""Convenience wrapper for MySQLdb."""
-
-import google.appengine.api.app_identity as app_identity
-import logging
-import MySQLdb
-import collections
-
-import util
-
-
-class Api():
-    connection = None
+connection = None
     cursor = None
 
     # Configurable on instantiation.
@@ -69,6 +58,10 @@ class Api():
         # self.connection = MySQLdb.connect(
         #     charset='utf8', cursorclass=MySQLdb.cursors.DictCursor, **creds)
         self.connection = MySQLdb.connect(charset='utf8', **credentials)
+
+    def table_columns(self, table):
+        result = self.query("SHOW columns FROM %s", (table,))
+        return [columns[0] for column in result]
 
     def query(self, query_string, param_tuple=tuple(), n=None):
         """Run a general-purpose query. Returns a tuple of tuples."""
