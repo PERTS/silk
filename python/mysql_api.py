@@ -71,8 +71,8 @@ class Api():
         self.connection = MySQLdb.connect(charset='utf8', **credentials)
 
     def table_columns(self, table):
-        result = self.query("SHOW columns FROM %s", (table,))
-        return [columns[0] for column in result]
+        result = self.query("SHOW columns FROM `{}`".format(table))
+        return [column[0] for column in result]
 
     def query(self, query_string, param_tuple=tuple(), n=None):
         """Run a general-purpose query. Returns a tuple of tuples."""
