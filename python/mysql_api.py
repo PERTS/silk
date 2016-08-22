@@ -74,6 +74,18 @@ class Api():
         result = self.query("SHOW columns FROM `{}`".format(table))
         return [column[0] for column in result]
 
+    def reset(self, table_definitions):
+        """Drop all given tables and re-created them.
+
+        Takes a dictionary of table name to with CREATE TABLE query string.
+        """
+        if not util.is_localhost():
+            raise Exception("You REALLY don't want to do that.")
+
+        for table, definition in table_definitions.items():
+            self.query('DROP TABLE IF EXISTS `{}`;'.format(table))
+            self.query(definition)
+
     def query(self, query_string, param_tuple=tuple(), n=None):
         """Run a general-purpose query. Returns a tuple of tuples."""
         self.cursor.execute(query_string, param_tuple)
@@ -83,7 +95,7 @@ class Api():
             return self.cursor.fetchmany(n)
 
     def select_query(self, query_string, param_tuple=tuple(), n=None):
-        """Extends .query() by making results more convenient.
+        """Simple extension of .query() by making results more convenient.
 
         Interpolate with %s syntax and the param_tuple argument. Example:
         sql_api.query(
@@ -98,7 +110,27 @@ class Api():
         fields = [f[0] for f in self.cursor.description]
         return [{fields[i]: v for i, v in enumerate(row)} for row in result]
 
-    def select_query_single_value(self, query_string, param_tuple=tuple()):
+    def select_star_where(self, table, limit=100, **where_params):
+        """Get whole rows matching filters. Restricted but convenient."""
+        if where_params:
+            items = where_params.items()
+            keys = [k for k, v in items]
+            values = tuple([v for k, v in items])
+            where_clauses = ['`{}` = %s'.format(k) for k in keys]
+        else:
+            values = tuple()
+            where_clauses = ['1']
+
+        return self.select_query(
+            "SELECT * FROM `{}` WHERE {} LIMIT {}".format(
+                table,
+                ' AND '.join(where_clauses),
+                limit
+            ),
+            values
+        )
+
+    def select_single_value(self, query_string, param_tuple=tuple()):
         """Returns the first value of the first row of results, or None."""
         self.cursor.execute(query_string, param_tuple)
         result = self.cursor.fetchone()
@@ -162,3 +194,18 @@ class Api():
         getattr(self.cursor, insert_method)(query_string, params)
 
         return self._commit()
+
+    def update_row(self, table, id_col, id, **params):
+        """UPDATE a row by id, assumed to be unique key."""
+        query_string = 'UPDATE `{}` SET {} WHERE `{}` = %s'.format(
+            table,
+            ', '.join(['`{}` = %s'.format(k) for k in params.keys()]),
+            id_col
+        )
+
+        p = params.values()
+        p.append(id)
+
+        self.query(query_string, param_tuple=tuple(p))
+
+        self._commit()
