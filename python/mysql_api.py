@@ -139,20 +139,18 @@ class Api():
         return result if result is None else result[0]
 
     def _commit(self):
-        """Must be called for INSERT and UPDATE queries or they won't work."""
+        """Must be called for INSERT and UPDATE queries or they won't work.
+
+        Raises MySQLdb.Error on failed commit, with automatic rollback.
+        """
         try:
             self.connection.commit()
         except MySQLdb.Error as e:
-            logging.error("MySQLdb error on INSERT. Will be rolled back. "
-                          "{}".format(e))
             logging.error("Last query run was:\n{}"
                           .format(self.cursor._last_executed))
             self.connection.rollback()
-            success = str(e)
-        else:
-            success = True
-
-        return success
+            raise MySQLdb.Error(
+                "MySQLdb error on INSERT. Will be rolled back. {}".format(e))
 
     def insert_row_dicts(self, table, row_dicts):
         """Insert one record or many records.
@@ -193,7 +191,7 @@ class Api():
 
         getattr(self.cursor, insert_method)(query_string, params)
 
-        return self._commit()
+        self._commit()
 
     def update_row(self, table, id_col, id, **params):
         """UPDATE a row by id, assumed to be unique key."""
