@@ -110,7 +110,8 @@ class Api():
         fields = [f[0] for f in self.cursor.description]
         return [{fields[i]: v for i, v in enumerate(row)} for row in result]
 
-    def select_star_where(self, table, limit=100, **where_params):
+    def select_star_where(self, table, order_by=None, limit=100,
+                          **where_params):
         """Get whole rows matching filters. Restricted but convenient."""
         if where_params:
             items = where_params.items()
@@ -122,10 +123,11 @@ class Api():
             where_clauses = ['1']
 
         return self.select_query(
-            "SELECT * FROM `{}` WHERE {} LIMIT {}".format(
+            "SELECT * FROM `{}` WHERE {} {order_by} LIMIT {limit} ".format(
                 table,
                 ' AND '.join(where_clauses),
-                limit
+                order_by='ORDER BY `{}`'.format(order_by) if order_by else '',
+                limit=limit,
             ),
             values
         )
