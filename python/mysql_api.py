@@ -13,8 +13,8 @@ class Api():
     cursor = None
 
     # Configurable on instantiation.
-    production_instance = None  # Cloud SQL instance name in project.
-    production_user = 'root'
+    cloud_sql_instance = None  # Cloud SQL instance name in project.
+    cloud_sql_user = 'root'
     local_user = None
     local_password = None
     local_ip = '127.0.0.1'
@@ -22,7 +22,7 @@ class Api():
     db_name = None
 
     def __init__(self, **kwargs):
-        keys = ['production_instance', 'production_user', 'local_user',
+        keys = ['cloud_sql_instance', 'cloud_sql_user', 'local_user',
                 'local_password', 'local_ip', 'local_port', 'db_name']
         for k in keys:
             v = kwargs.get(k, None)
@@ -43,7 +43,7 @@ class Api():
         Either Google Cloud SQL or local MySQL server. Detects environment with
         functions from util module.
         """
-        if util.is_localhost():
+        if util.is_localhost() or util.is_codeship():
             credentials = {
                 'host': self.local_ip,
                 'port': self.local_port,
@@ -52,12 +52,14 @@ class Api():
                 'passwd': self.local_password
             }
         else:
+            # Note: for second generation cloud sql instances, the instance
+            # name must include the region, e.g. 'us-central1:production-01'.
             credentials = {
-                'unix_socket': '/cloudsql/{app_id}:{db_instance}'.format(
+                'unix_socket': '/cloudsql/{app_id}:{instance_name}'.format(
                     app_id=app_identity.get_application_id(),
-                    db_instance=self.production_instance),
+                    instance_name=self.cloud_sql_instance),
                 'db': self.db_name,
-                'user': self.production_user,
+                'user': self.cloud_sql_user,
             }
 
         # Although the docs say you can specify a `cursorclass` keyword
