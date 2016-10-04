@@ -81,7 +81,7 @@ class Api():
 
         Takes a dictionary of table name to with CREATE TABLE query string.
         """
-        if not util.is_localhost() and not util.is_codeship():
+        if not util.is_development():
             raise Exception("You REALLY don't want to do that.")
 
         for table, definition in table_definitions.items():
