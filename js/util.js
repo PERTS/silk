@@ -542,7 +542,9 @@ var util = (function () {
     };
 
     // Breaks on capital letters only. Not tested with numbers, etc.
-    util.camelToSeparated = function (camel, separator) {
+    // Standing defaults to false.
+    util.camelToSeparated = function (camel, separator, standing) {
+        if (standing !== true) { standing = false; }
         var regexp = /[A-Z]/g,
             breakPoints = [],
             substrings = [],
@@ -555,6 +557,13 @@ var util = (function () {
             substrings.push(camel.slice(previousBreak, breakPoint - 1).toLowerCase());
         });
         substrings.push(camel.slice(breakPoints.last() - 1).toLowerCase());
+
+        // If this is StandingCamel (as opposed to drinkingCamel), ignore the
+        // first break point.
+        if (standing) {
+            substrings.shift();
+        }
+
         return substrings.join(separator);
     };
 
