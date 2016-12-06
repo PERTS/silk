@@ -371,10 +371,23 @@ Function.prototype.partial = function () {
     };
 };
 
-String.prototype.contains = function (value) {
+// This method lets you determine whether or not a string includes another string.
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/includes
+String.prototype.includes = function(search, start) {
     'use strict';
-    return this.indexOf(value) !== -1;
+    if (typeof start !== 'number') {
+        start = 0;
+    }
+
+    if (start + search.length > this.length) {
+        return false;
+    } else {
+        return this.indexOf(search, start) !== -1;
+    }
 };
+
+// Alias for legacy code
+String.prototype.contains = String.prototype.includes;
 
 // ** Util Module ** //
 
