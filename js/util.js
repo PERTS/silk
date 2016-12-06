@@ -761,21 +761,11 @@ var util = (function () {
         }
     };
 
-    // See http://stackoverflow.com/questions/175739/is-there-a-built-in-way-in-javascript-to-check-if-a-string-is-a-valid-number
-    // Example:
-    // util.isStringNumeric('100', 'strict')  // true
-    // util.isStringNumeric('100x', 'strict')  // false
-    // util.isStringNumeric('100x', 'loose')  // true
-    // util.isStringNumeric('x100x', 'loose')  // false
-    util.isStringNumeric = function (s, looseOrStrict) {
-        if (looseOrStrict === 'strict') {
-            return s === '' ? false : !isNaN(s);
-        } else if (looseOrStrict === 'loose') {
-            return !isNaN(parseInt(s, 10));
-        } else {
-            throw new Error("Must specify 'strict' or 'loose'.");
-        }
-    };
+    // Validates if the provided string is numeric
+    // http://stackoverflow.com/a/1830844
+    util.isStringNumeric = function (s) {
+        return !isNaN(parseFloat(s)) && isFinite(s);
+    }
 
     util.randomString = function (length) {
         // Code is ugly b/c cam originally wrote this in coffeescript.
@@ -904,4 +894,3 @@ var util = (function () {
 
     return util;
 }());
-
