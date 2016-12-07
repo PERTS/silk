@@ -329,10 +329,42 @@
 
 // Functions that aren't in the spec, but are useful in native prototypes.
 
-Array.prototype.contains = function (value) {
+// The includes() method determines whether an array includes a certain element,
+// returning true or false as appropriate.
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes
+Array.prototype.includes = function(searchElement /*, fromIndex*/) {
     'use strict';
-    return this.indexOf(value) > -1;
+    if (this == null) {
+        throw new TypeError('Array.prototype.includes called on null or undefined');
+    }
+
+    var O = Object(this);
+    var len = parseInt(O.length, 10) || 0;
+    if (len === 0) {
+        return false;
+    }
+    var n = parseInt(arguments[1], 10) || 0;
+    var k;
+    if (n >= 0) {
+        k = n;
+    } else {
+        k = len + n;
+        if (k < 0) {k = 0;}
+    }
+    var currentElement;
+    while (k < len) {
+        currentElement = O[k];
+        if (searchElement === currentElement ||
+           (searchElement !== searchElement && currentElement !== currentElement)) { // NaN !== NaN
+            return true;
+        }
+        k++;
+    }
+    return false;
 };
+
+// Alias for legacy code
+Array.prototype.contains = Array.prototype.includes;
 
 Array.prototype.last = function () {
     'use strict';
@@ -371,10 +403,23 @@ Function.prototype.partial = function () {
     };
 };
 
-String.prototype.contains = function (value) {
+// This method lets you determine whether or not a string includes another string.
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/includes
+String.prototype.includes = function(search, start) {
     'use strict';
-    return this.indexOf(value) !== -1;
+    if (typeof start !== 'number') {
+        start = 0;
+    }
+
+    if (start + search.length > this.length) {
+        return false;
+    } else {
+        return this.indexOf(search, start) !== -1;
+    }
 };
+
+// Alias for legacy code
+String.prototype.contains = String.prototype.includes;
 
 // ** Util Module ** //
 
@@ -761,21 +806,11 @@ var util = (function () {
         }
     };
 
-    // See http://stackoverflow.com/questions/175739/is-there-a-built-in-way-in-javascript-to-check-if-a-string-is-a-valid-number
-    // Example:
-    // util.isStringNumeric('100', 'strict')  // true
-    // util.isStringNumeric('100x', 'strict')  // false
-    // util.isStringNumeric('100x', 'loose')  // true
-    // util.isStringNumeric('x100x', 'loose')  // false
-    util.isStringNumeric = function (s, looseOrStrict) {
-        if (looseOrStrict === 'strict') {
-            return s === '' ? false : !isNaN(s);
-        } else if (looseOrStrict === 'loose') {
-            return !isNaN(parseInt(s, 10));
-        } else {
-            throw new Error("Must specify 'strict' or 'loose'.");
-        }
-    };
+    // Validates if the provided string is numeric
+    // http://stackoverflow.com/a/1830844
+    util.isStringNumeric = function (s) {
+        return !isNaN(parseFloat(s)) && isFinite(s);
+    }
 
     util.randomString = function (length) {
         // Code is ugly b/c cam originally wrote this in coffeescript.
@@ -904,4 +939,3 @@ var util = (function () {
 
     return util;
 }());
-
