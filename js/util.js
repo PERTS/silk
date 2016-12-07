@@ -540,6 +540,12 @@ var util = (function () {
 
     util.setProductionDomain = function (domain) {
         var urlParser = document.createElement('a');
+
+        // We need to set the protocol before assigning it to href below or else
+        // it'll be treated as a relative path and hostname will prepend with
+        // the current environment's protocol *and* domain.
+        domain = '//' + domain; // shortcut to use current protocol
+
         urlParser.href = domain;
         if (!urlParser.hostname) {
             throw new Error("Invalid domain: " + domain);
@@ -552,8 +558,7 @@ var util = (function () {
             throw new Error("production domain not set");
         }
         var match = window.location.href.contains('//' + productionDomain);
-        // If no matches, .match returns null
-        if (match === null) {
+        if (!match) {
             if (window.debug) {
                 window.console.warn(
                     "Detected non-production environment. This function " +
