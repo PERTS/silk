@@ -561,9 +561,9 @@ var util = (function () {
         if (!match) {
             if (window.debug) {
                 window.console.warn(
-                    "Detected non-production environment. This function " +
-                    "expects Neptune to be hosted on " +
-                    "www.neptune.org");
+                    "Detected development environment. This function " +
+                    "considers only " + productionDomain + " to be " +
+                    "production.");
             }
             return true;
         }
