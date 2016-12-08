@@ -557,7 +557,7 @@ var util = (function () {
         if (productionDomain === undefined) {
             throw new Error("production domain not set");
         }
-        var match = window.location.href.contains('//' + productionDomain);
+        var match = window.location.href.includes('//' + productionDomain);
         if (!match) {
             if (window.debug) {
                 window.console.warn(
@@ -852,7 +852,7 @@ var util = (function () {
     };
 
     util.range = function (min, max, step, inclusiveOrExclusive) {
-        if (!['inclusive', 'exclusive'].contains(inclusiveOrExclusive)) {
+        if (!['inclusive', 'exclusive'].includes(inclusiveOrExclusive)) {
             inclusiveOrExclusive = 'exclusive';
         }
 
