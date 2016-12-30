@@ -99,7 +99,6 @@
     if (!Array.prototype.find) {
       Object.defineProperty(Array.prototype, 'find', {
         value: function(predicate) {
-         'use strict';
          if (this == null) {
            throw new TypeError('Array.prototype.find called on null or undefined');
          }
