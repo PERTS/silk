@@ -117,6 +117,7 @@
            }
          }
          return undefined;
+          /* jshint bitwise: false */
         }
       });
     }
