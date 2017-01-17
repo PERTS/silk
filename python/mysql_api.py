@@ -1,9 +1,10 @@
 """Convenience wrapper for MySQLdb."""
 
+import collections
 import google.appengine.api.app_identity as app_identity
 import logging
 import MySQLdb
-import collections
+import time
 
 import util
 
@@ -11,6 +12,8 @@ import util
 class Api():
     connection = None
     cursor = None
+    num_tries = 4
+    retry_interval_ms = 500  # base for exponential backoff: 500, 1000, 2000...
 
     # Configurable on instantiation.
     cloud_sql_instance = None  # Cloud SQL instance name in project.
@@ -30,12 +33,36 @@ class Api():
                 setattr(self, k, v)
 
         self.connect_to_db()
-        self.cursor = self.connection.cursor()
 
     # This is safe as long as the class does not hold any circular references.
     # http://eli.thegreenplace.net/2009/06/12/safely-using-destructors-in-python
     def __del__(self):
         self.connection.close()
+
+    def _cursor_retry_wrapper(self, method_name, *args):
+        """Wrap the normal cursor.execute from MySQLdb with a retry."""
+        tries = 0
+        while True:
+            try:
+                # Either execute or execute_many
+                getattr(self.cursor, method_name)(*args)
+                break  # call succeeded, don't try again
+            except MySQLdb.ProgrammingError as e:
+                logging.error(e)  # log the error, but try again
+                self.connect_to_db()  # try to re-establish connection
+            tries += 1
+            if tries >= self.num_tries:
+                # That's enough tries, just throw an error.
+                raise Exception("Recurrent MySQLdb.ProgrammingError, gave up.")
+            # Sleep interval between tries backs off exponentially.
+            # N.B. retry interval is in ms while time.sleep() takes seconds.
+            time.sleep(2 ** (tries - 1) * self.retry_interval_ms / 1000)
+
+    def _cursor_execute(self, *args):
+        self._cursor_retry_wrapper('execute', *args)
+
+    def _cursor_executemany(self, *args):
+        self._cursor_retry_wrapper('executemany', *args)
 
     def connect_to_db(self):
         """Establish connection to MySQL db instance.
@@ -71,6 +98,7 @@ class Api():
         # self.connection = MySQLdb.connect(
         #     charset='utf8', cursorclass=MySQLdb.cursors.DictCursor, **creds)
         self.connection = MySQLdb.connect(charset='utf8', **credentials)
+        self.cursor = self.connection.cursor()
 
     def table_columns(self, table):
         result = self.query("SHOW columns FROM `{}`".format(table))
@@ -90,7 +118,7 @@ class Api():
 
     def query(self, query_string, param_tuple=tuple(), n=None):
         """Run a general-purpose query. Returns a tuple of tuples."""
-        self.cursor.execute(query_string, param_tuple)
+        self._cursor_execute(query_string, param_tuple)
         if n is None:
             return self.cursor.fetchall()
         else:
@@ -136,7 +164,7 @@ class Api():
 
     def select_single_value(self, query_string, param_tuple=tuple()):
         """Returns the first value of the first row of results, or None."""
-        self.cursor.execute(query_string, param_tuple)
+        self._cursor_execute(query_string, param_tuple)
         result = self.cursor.fetchone()
 
         # result is None if no rows returned, else a tuple.
@@ -193,7 +221,7 @@ class Api():
             insert_method = 'executemany'
             params = value_tuples
 
-        getattr(self.cursor, insert_method)(query_string, params)
+        self._cursor_retry_wrapper(insert_method, query_string, params)
 
         self._commit()
 
