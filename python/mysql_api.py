@@ -9,7 +9,26 @@ import time
 import util
 
 
-class Api():
+class MySQLApi(object):
+    """Given credentials, connects to a Cloud SQL instance and simplifies
+    various kinds of queries. Use `with` statement to ensure connections are
+    correctly closed.
+
+    Example:
+
+    with Api(**credentials) as mysql_api:
+        result = mysql_api.select_star_where('checkpoint', status='incomplete')
+
+    N.B. Does _not_ pool/cache connections, b/c:
+
+    > We recommend that a new connection is created to service each HTTP
+    > request, and re-used for the duration of that request (since the time to
+    > create a new connection is similar to that required to test the liveness
+    > of an existing connection).
+
+    https://groups.google.com/forum/#!topic/google-cloud-sql-discuss/sS38Nh7MriY
+    """
+
     connection = None
     cursor = None
     num_tries = 4
@@ -32,24 +51,34 @@ class Api():
             if v:
                 setattr(self, k, v)
 
+    def __enter__(self):
         self.connect_to_db()
+        return self
 
-    # This is safe as long as the class does not hold any circular references.
-    # http://eli.thegreenplace.net/2009/06/12/safely-using-destructors-in-python
-    def __del__(self):
+    def __exit__(self, type, value, traceback):
         self.connection.close()
 
-    def _cursor_retry_wrapper(self, method_name, *args):
-        """Wrap the normal cursor.execute from MySQLdb with a retry."""
+    def _cursor_retry_wrapper(self, method_name, query_string, param_tuple):
+        """Wrap the normal cursor.execute from MySQLdb with a retry.
+
+        Args:
+            method_name     str, either 'execute' or 'executemany'
+        """
         tries = 0
+        exceptions = (MySQLdb.ProgrammingError, MySQLdb.OperationalError,
+                      MySQLdb.InterfaceError)
         while True:
             try:
                 # Either execute or execute_many
-                getattr(self.cursor, method_name)(*args)
+                getattr(self.cursor, method_name)(query_string, param_tuple)
                 break  # call succeeded, don't try again
-            except MySQLdb.ProgrammingError as e:
-                logging.error(e)  # log the error, but try again
-                self.connect_to_db()  # try to re-establish connection
+            except exceptions as e:
+                # Log the error and try again. Close the problematic connection
+                # and make a new one.
+                logging.error("MySQLApi caught an exception and will retry.")
+                logging.error(e)
+                self.connection.close()
+                self.connect_to_db()
             tries += 1
             if tries >= self.num_tries:
                 # That's enough tries, just throw an error.
@@ -58,10 +87,10 @@ class Api():
             # N.B. retry interval is in ms while time.sleep() takes seconds.
             time.sleep(2 ** (tries - 1) * self.retry_interval_ms / 1000)
 
-    def _cursor_execute(self, *args):
-        self._cursor_retry_wrapper('execute', *args)
+    def _cursor_execute(self, query_string, param_tuple):
+        self._cursor_retry_wrapper('execute', query_string, param_tuple)
 
-    def _cursor_executemany(self, *args):
+    def _cursor_executemany(self, query_string, param_tuple):
         self._cursor_retry_wrapper('executemany', *args)
 
     def connect_to_db(self):
