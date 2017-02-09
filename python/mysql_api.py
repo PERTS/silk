@@ -169,9 +169,10 @@ class MySQLApi(object):
         fields = [f[0] for f in self.cursor.description]
         return [{fields[i]: v for i, v in enumerate(row)} for row in result]
 
-    def select_star_where(self, table, order_by=None, limit=100,
+    def select_star_where(self, table, order_by=None, limit=100, offset=None,
                           **where_params):
         """Get whole rows matching filters. Restricted but convenient."""
+
         if where_params:
             items = where_params.items()
             keys = [k for k, v in items]
@@ -181,15 +182,21 @@ class MySQLApi(object):
             values = tuple()
             where_clauses = ['1']
 
-        return self.select_query(
-            "SELECT * FROM `{}` WHERE {} {order_by} LIMIT {limit} ".format(
-                table,
-                ' AND '.join(where_clauses),
-                order_by='ORDER BY `{}`'.format(order_by) if order_by else '',
-                limit=limit,
-            ),
-            values
+        query = """
+            SELECT *
+            FROM `{table}`
+            WHERE {where}
+            {order_by}
+            LIMIT {offset}{limit}
+        """.format(
+            table=table,
+            where=' AND '.join(where_clauses),
+            order_by='ORDER BY `{}`'.format(order_by) if order_by else '',
+            offset='{},'.format(offset) if offset else '',
+            limit=limit,
         )
+
+        return self.select_query(query, values)
 
     def select_single_value(self, query_string, param_tuple=tuple()):
         """Returns the first value of the first row of results, or None."""
