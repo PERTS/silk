@@ -1,0 +1,216 @@
+/* Custom input - select many */
+
+.select-many {
+  margin: 30px 0px;
+  width: 100%;
+  text-align: center;
+}
+
+.select-many_option {
+  position: relative;
+  display: inline-block;
+  margin: 20px 15px;
+  padding: 10px;
+  height: 260px;
+  width: 220px;
+  background-color: #f6f9fb;
+  vertical-align: top;
+  @include box-sizing(border-box);
+  text-align: center;
+
+  &:hover {
+    border: 5px solid $primary-color;
+    cursor: pointer;
+  }
+
+  &.selected {
+    background-color: #c5e7f9;
+  }
+
+  .option-text {
+    font-size: 18px;
+    line-height: 26px;
+    position: absolute;
+    width: 100%;
+    padding: 0px 10px;
+    bottom: 20px;
+    left: 0px;
+    font-weight: 300;
+  }
+
+  &:hover {
+    .option-image {
+      margin-top: 10px;
+    }
+
+    .option-text {
+      bottom: 15px;
+      /* There's a 5px border on hover, so shrink padding by matching */
+      /* amount to avoid content wiggle. */
+      padding: 0 5px;
+    }
+  }
+
+  .option-image#option-1 {
+    background-image: url('/static/images/option-1-fixed.png');
+  }
+  .option-image#option-2 {
+    background-image: url('/static/images/option-2-fixed.png');
+  }
+  .option-image#option-3 {
+    background-image: url('/static/images/option-3-fixed.png');
+  }
+}
+
+.smarter-option {
+  display: inline-block;
+  position: relative;
+  width: 370px;
+  margin: 25px 12px;
+  height: 300px;
+  background-color: #eee;
+  overflow: hidden;
+
+  &.smarter-option--1 {
+    background-image: url('/static/images/option-easy-work.png');
+    margin-left: 0px;
+  }
+
+  &.smarter-option--2 {
+    background-image: url('/static/images/option-hard-work.png');
+    margin-right: 0px;
+  }
+
+  &:hover .smarter-option_label {
+    top: 150px;
+  }
+}
+
+.smarter-option_label {
+  position: absolute;
+  width: 100%;
+  left: 0px;
+  top: 300px;
+  @include transition-property(top 0.5s ease);
+  height: 150px;
+  background-color: rgba(0,0,0,0.65);
+  color: $white;
+  @include box-sizing(border-box);
+  padding: 20px;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 300;
+}
+
+/* Slider toggle */
+
+.perts-slider-outer {
+  width: 94px;
+  height: 27px;
+  overflow: hidden;
+  position: relative;
+  float: right;
+  z-index: 10;
+}
+
+.perts-slider {
+  background: url('http://labs.engageinteractive.co.uk/itoggle/images/itoggle.png') 0 -27px;
+  width: 147px;
+  height: 27px;
+  margin-left: -53px;  /* "off" state */
+  cursor: pointer;
+
+  &.disabled {
+    opacity: 0.25;
+    filter: alpha(opacity=25); /* For IE8 and earlier */
+    cursor: default;
+  }
+}
+
+/* Neuron interaction */
+
+.neuron-part, .brain-lobe {
+  position: absolute;
+  display: block;
+  height: 26px;
+  width: 26px;
+  @include border-radius(16px);
+  background-color: $white;
+  border: 6px solid $primary-color;
+  @include box-shadow(0px 0px 6px rgba(0,0,0,0.6));
+
+  &:hover {
+    background-color: $primary-color;
+    border: 6px solid $hover-color;
+
+    .part-caption {
+      display: block;
+    }
+  }
+
+  .part-caption {
+    display: none;
+    position: absolute;
+    bottom: 20px;
+    width: 150px;
+    text-align: center;
+    font-style: bold;
+    background-color: $white;
+    padding: 10px;
+    border: 2px solid $light-font-color;
+    @include border-radius(5px); 
+  }
+}
+
+.neuron-part {
+
+  &#neuron-part--cell-body {
+    left: 110px;
+    top: 330px;
+  }
+
+  &#neuron-part--axon {
+    left: 290px;
+    top: 345px;
+  }
+
+  &#neuron-part--dendrites {
+    left: 85px;
+    top: 250px;
+  }
+
+  .part-caption {
+    left: 0px;
+  }
+}
+
+.brain-lobe {
+
+  &#brain-lobe--frontal {
+    left: 110px;
+    top: 230px;
+  }
+
+  &#brain-lobe--frontal .part-caption {
+    right: -55px;
+  }
+
+  &#brain-lobe--temporal {
+    left: 260px;
+    top: 330px;
+  }
+
+  &#brain-lobe--occipital {
+    left: 415px;
+    top: 300px;
+  }
+
+  &#brain-lobe--parietal {
+    left: 300px;
+    top: 210px;
+  }
+
+  .part-caption {
+    right: 0px;
+  }
+}

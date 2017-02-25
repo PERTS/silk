@@ -1,0 +1,488 @@
+/* Basic setup and formatting */
+@import 'compass/css3';
+
+// Colors
+$blue-color: #3faeec;
+$hover-color: #368dbe;
+$primary-color: $blue-color;
+$white: #fff;
+$cool-gray-color: #e3e3e3;
+$font-color: #333;
+$light-font-color: #999;
+$dark-blue: #4593d5;
+
+// Fonts
+$header-font: "din-condensed-web", 'Arial', sans-serif;
+$body-font: "museo-sans", 'Arial', sans-serif;
+
+// Layout
+$header-spacing: 30px;
+$standard-width: 800px;
+$gutter: 15px;
+
+@import 'audio';
+@import 'buttons';
+@import 'checkbox-radio';
+@import 'columns';
+@import 'images';
+@import 'interactive-elements';
+@import 'quotes';
+
+// Main styles
+html #SurveyEngineBody {
+  background: none;
+  background-color: $cool-gray-color;
+  font-family: $body-font;
+  color: $font-color;
+}
+
+.SkinInner {
+  width: 100%;
+  background-color: $white;
+  margin: 0px;
+}
+
+.hidden-label {
+  visibility: hidden;
+  height: 0;
+}
+
+.JFEScope .Separator~.Separator{ display: none; }
+
+.Skin {
+  background-color: $white;
+
+  .Separator {
+    margin: 0;
+    margin-bottom: -30px;
+    background-color: transparent;
+
+    ~ .Separator {
+      background-color: transparent;
+    }
+  } 
+
+  #Logo,
+  #PushStickyFooter,
+  #Plug {
+    display: none !important;
+  }
+
+  #Plug {
+    background-color: $cool-gray-color;
+  }
+
+  #Header {
+    position: relative;
+    display: block;
+    padding: 0px;
+    height: 80px;
+    background-color: $primary-color;
+  }
+
+  #Footer {
+    background-color: $cool-gray-color;
+    height: 80px;
+
+    .foot-text{
+      padding-top: 26px;
+      text-align: center;
+      font-family: $header-font;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 18px;
+      color: $light-font-color;
+    }
+  }
+
+  #Questions {
+    padding: 0px;
+    min-height: 400px;
+  }
+
+  .QuestionOuter {
+    padding: 0px;
+    overflow-x: auto;
+    -ms-overflow-x: auto;
+    -ms-overflow-style: auto;
+
+    .Inner {
+      padding: 0px;
+      /* Prevent wide content from scrolling, and prevent horiz scrollbar */
+      overflow-x: hidden;
+    }
+  }
+
+  #ProgressBar {
+    display: none;
+  }
+
+  .QuestionText {
+    padding: 0;
+  }
+
+  .QuestionBody,
+  .MC .QuestionText,
+  .TE .QuestionText,
+  .Matrix .QuestionText {
+    display: block;
+    width: $standard-width - 2*$gutter;
+    margin: 0 auto;
+    padding: 0;
+    position: relative;
+
+    @media only screen and (max-width: $standard-width) {
+      width: 100%;
+      padding: 0px $gutter;
+      @include box-sizing(border-box);
+    }
+  }
+
+  /* In the case of Matrix-style questions (with tables) */
+  /* Qualtrics automatically copies the QuestionText into */
+  /* the table <caption>. Normally you don't see this b/c */
+  /* there's a base style of caption {display: none}. We need */
+  /* to make sure the caption stays hidden despite the */
+  /* display: block instruction above. */
+  .Matrix caption.QuestionText {
+    display: none;
+  }
+
+  .QuestionText {
+    margin: 0px;
+  }
+
+  .QuestionBody table.ChoiceStructure.narrow-table {
+    width: 300px;
+    margin-top: 25px;
+  }
+
+  .QuestionBody table.ChoiceStructure.narrow-table td {
+    padding: 12px 0;
+  }
+
+  .MC {
+
+    .QuestionBody {
+      margin: 20px auto 25px auto;
+    }
+
+    .QuestionText {
+      font-weight: 300;
+      font-size: 21px;
+      color: $font-color;
+    }
+
+    table {
+      margin-bottom: 55px;
+    }
+
+    input.TextEntryBox.InputText {
+      left: 0px;
+      margin: 5px 0px 15px 0px;
+    }
+  }
+
+  .ML *, 
+  .SL * {
+    @include box-sizing(border-box);
+  }
+
+  .ML .ChoiceStructure, 
+  .SL .ChoiceStructure.ChoiceStructureStyled {
+    background-color: $primary-color;
+    padding: 35px 6px 6px 6px;
+    margin: 30px 0px;
+    position: relative;
+  }
+
+  .ML .ChoiceStructure textarea, 
+  .SL .ChoiceStructure.ChoiceStructureStyled input {
+    width: 100% !important;
+    height: 250px !important;
+    border: 0;
+    outline: 0;
+    padding: 15px;
+    font-size: 21px;
+    font-weight: 300;
+    color: $font-color;
+    line-height: 28px;
+    background-color: $white;
+    @include border-radius(0);
+  }
+
+  .SL .ChoiceStructure.ChoiceStructureStyled input {
+    height: 50px !important;
+    margin: 0px;
+  }
+}
+
+li span.LabelWrapper {
+  font-weight: 300;
+  font-size: 21px;
+  color: $font-color;
+}
+
+table span.LabelWrapper {
+  font-weight: 500;
+  font-size: 15px;
+  color: $font-color;
+  padding: 0px 10px;
+  margin: 0;
+  display: block;
+}
+
+.open-response_header {
+  position: absolute;
+  top: 12px;
+  left: 10px;
+  color: $white;
+}
+
+/* Text formatting */
+
+#section-header {
+  text-align: center;
+  padding: 0px 0px 45px 0;
+  margin-top: $header-spacing;
+  color: $light-font-color;
+  font-size: 18px;
+  font-family: $header-font;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.Skin h1, 
+.Skin #title-text {
+  color: $dark-blue;
+  font-size: 24px;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+
+.Skin p {
+  font-size: 21px;
+  line-height: 30px;
+  margin: 15px 0px;
+  font-weight: 300;
+}
+
+.callout-text {
+  font-size: 21px;
+  line-height: 30px;
+  font-style: italic;
+  color: $dark-blue;
+  margin: 30px 0px;
+  font-weight: 500;
+}
+
+.instruction-text {
+  font-size: 18px;
+  color: $light-font-color;
+  font-style: italic;
+  margin-bottom: 25px;
+}
+
+.footnote-text {
+  font-size: 14px;
+  color: $light-font-color;
+  margin-bottom: 25px;
+}
+
+/* Setting up custom containers */
+
+#main-content *, 
+#split-page *,
+#splash-page * {
+  @include box-sizing(border-box);
+}
+
+#main-content, 
+#splash-page {
+  display: block;
+  width: $standard-width;
+  padding: 0px $gutter;
+  min-height: 450px;
+  margin: 0 auto 20px auto;
+  max-width: 100%;
+  position: relative;
+  @include box-sizing(border-box);
+}
+
+#splash-page {
+  margin: 100px auto 20px auto;
+  text-align: center;
+
+  h1 {
+    font-size: 32px;
+  }
+}
+
+#split-page {
+  display: block;
+  width: 1020px;
+  min-height: 650px;
+  margin: 0px auto;
+  position: relative;
+}
+
+#split-text {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  width: 510px;
+  padding: 0px $gutter;
+  height: 650px;
+  position: relative;
+}
+
+#split-image {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  width: 500px;
+  height: 680px;
+  overflow: hidden;
+
+  .image-block {
+    margin: 0px;
+  }
+  .image-caption{
+    position: absolute;
+    text-align: center;
+    bottom: 0px;
+    width: 100%;
+    height: 95px;
+    color: $light-font-color;
+    font-size: 18px;
+    font-style: italic;
+  }
+}
+
+/* Hidden container */
+
+.hidden-container {
+  &.hidden-container--hidden {
+    display: none;
+  }
+}
+
+/* Custom bullet lists */
+
+.Skin {
+
+  ul.perts-bullets, 
+  ol.perts-bullets {
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    li {
+      font-size: 21px;
+      line-height: 30px;
+      color: #666;
+      list-style: none;
+      margin-bottom: 3px;
+      font-weight: 300;
+    }
+  }
+
+  ul.perts-bullets, 
+  ul.perts-bullets li,
+  .QuestionText ul.perts-bullets, 
+  .QuestionText ul.perts-bullets li {
+    list-style-type: none;
+  }
+
+  ul.perts-bullets li:before {
+    content: "";
+    height: 12px;
+    width: 12px;
+    background-color: $primary-color;
+    @include border-radius(6px);
+    position: absolute;
+    display: block;
+    margin-top: 8px;
+    left: 12px;
+  }
+
+  #split-text ul.perts-bullets li:before {
+    left: 30px;
+  }
+}
+
+/* User input fields (open-response and short-form) */
+
+.Skin {
+
+  .open-response {
+    background-color: $primary-color;
+    margin: 20px 0px;
+    padding: 15px;
+
+    .open-response_header {
+      color: $white;
+      padding-bottom: 15px;
+    }
+
+    textarea.open-response_input {
+      width: 100%;
+      height: 250px;
+      border: 0;
+      outline: 0;
+      padding: 15px;
+      font-size: 21px;
+      font-weight: 300;
+      color: $font-color;
+      line-height: 28px;
+      background-color: $white;
+      @include border-radius(0);
+    }
+  }
+
+  input.short-form, 
+  input[type="TEXT"] {
+    border-style: none;
+    border: 1px solid #ccc;
+    font-size: 21px;
+    font-weight: 300;
+    padding: 10px 15px;
+    margin: 0px;
+    width: 100%;
+    border: 0;
+    outline: 0;
+    background-color: $white;
+    @include border-radius(0);
+  }
+
+  input[type="TEXT"] {
+    margin-bottom: 20px;
+    @include box-sizing(border-box);
+  }
+
+}
+
+/* Hide timing questions during previews so they look more realistic. */
+.QuestionOuter.Timing {
+  display: none;
+}
+
+/* Fixes for iPhone and iPad */
+@media only screen and (max-device-width: 1024px) and (min-device-width: 768px) {
+  /* Qualtrics applies a 90% max width here. Stupid. */
+  html #SurveyEngineBody.iOS .Skin .SkinInner,
+  html #SurveyEngineBody.Android .Skin .SkinInner {
+    max-width: 100%;
+  }
+}
+
+/* Override user agent stylesheets on mobile to allow scrolling within
+ * fieldset elements */
+fieldset {
+  min-width: 0;
+}
+
+@-moz-document url-prefix() {
+  fieldset {
+    display: table-cell;
+  }
+}

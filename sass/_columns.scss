@@ -1,0 +1,59 @@
+/* Formatting multiple columns with fluid sizing */
+
+.columns {
+  display: block;
+  margin: 30px 0;
+
+  &:before,
+  &:after {
+    display: table;
+    content: " ";
+    clear: both;
+  }
+}
+
+.col {
+  display: block;
+  min-height: 1px;
+
+  &:first-child {
+    padding-right: 20px;
+
+    @media only screen and (max-width: $standard-width) {
+      padding-right: 0;
+    }
+  }
+
+  .perts-quote {
+    padding-right: 0px;
+  }
+
+  &.col-4 {
+    width: 33.33%;
+  }
+  &.col-4.narrow {
+    width: 25%;
+  }
+  &.col-8 {
+    width: 66.67%;
+  }
+  &.col-8.wide {
+    width: 75%;
+  }
+  &.col-8.wide.extra-padding{
+    padding-left: 60px;
+  }
+
+  @media only screen and (min-width: $standard-width) {
+    float: left;
+  }
+
+  @media only screen and (max-width: $standard-width) {
+    &.col-4,
+    &.col-4.narrow,
+    &.col-8,
+    &.col-8.wide {
+      width: 100%;
+    }
+  }
+}

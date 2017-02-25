@@ -1,0 +1,47 @@
+/* Image blocks */
+
+.image-block {
+  display: block;
+  margin: 30px auto;
+  text-align: center;
+
+  .image-block_caption {
+    margin: 5px 0px;
+    color: $light-font-color;
+  }
+
+  .col-4 & {
+    margin: 15px auto;
+    max-width: 100%;
+
+    &.image-block--quote {
+      margin: 45px auto 0px auto;
+    }
+
+    &.image-block--padded {
+      margin: 30px auto;
+    }
+  }
+
+  &#intro-image {
+    height: 150px;
+    width: 400px;
+  }
+
+  &#brain-lobes {
+    background-image: url("/static/images/brain-lobes.png");
+    height: 680px;
+    width: 500px;
+    margin: 0px;
+    background-color: #f0f1f2;
+    position: relative;
+  }
+}
+
+/* Image insets */
+
+.image-inset-right {
+  float: right;
+  margin-left: 20px;
+  margin-top: 20px;
+}

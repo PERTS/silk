@@ -1,0 +1,51 @@
+/* Audio toggle in header (default is OFF) */
+#audio-toggle-wrapper {
+  display: block;
+  position: absolute;
+  right: 30px;
+  top: 22px;
+  height: 25px;
+  width: 120px;
+  border: 5px solid;
+  border-color: transparent;
+  background: transparent;
+  padding: 3px 17px 2px 3px;
+}
+
+#audio-toggle {
+  height: 100%;
+  cursor: pointer;
+  background: url('//www.perts.net/static/images/audio-sprite.png') 0 0;
+
+  &:hover {
+    background-position: 0 125px;
+  }
+
+  &.disabled,
+  &.disabled:hover {
+    cursor: auto;
+    background-position: 0 100px;
+  }
+
+  &.on {
+    background-position: 0 75px;
+
+    &:hover {
+      background-position: 0 50px;
+    }
+
+    &.disabled,
+    &.disabled:hover {
+      background-position: 0 25px;
+    }
+  }
+}
+
+/* On browsers which use the (visible) embedded media player, move it */
+/* outside the viewport. Giving it display: none; will break it. */
+.perts-audio-embed {
+  position: absolute;
+  /* Player is normally 320 x 22 px. This positions it offscreen. */
+  top: -30px;
+  left: -330px;
+}

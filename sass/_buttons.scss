@@ -1,0 +1,91 @@
+/* Buttons - Next and Back */
+
+/* For typical re-styling of next button. */
+#Buttons #NextButton,
+/* For the "blocked navigation" button. */
+#FakeNextButton,
+/* Important if the .perts-button is replacing a nav button in the #Buttons */
+/* container. */
+#Buttons .perts-button,
+/* Important if the .perts-button is in question text, like the audio test */
+/* play button. */
+.perts-button {
+  display: block;
+  margin: 0px auto 45px auto;
+  box-shadow: none;
+  background-color: $primary-color;
+  width: 280px;
+  padding: 12px 3px;
+  font-size: 18px;
+  color: $white;
+  @include border-radius(5px);
+  border: 0px solid;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 300;
+  font-style: normal;
+  @include box-sizing(border-box);
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+  @include appearance(none);
+
+  &:hover {
+    background-color: $hover-color;
+  }
+}
+
+#FakeNextButton {
+  position: absolute;
+  bottom: 0px;
+  right: 110px;
+  cursor: pointer;
+}
+
+#Buttons #NextButton:active,
+#Buttons .perts-button:active {
+  top: 0px;
+  box-shadow: none;
+}
+
+#Buttons #NextButton.disabled-button {
+  background-color: #7bc7f1;
+  cursor: default;
+}
+
+#Buttons #NextButton.disabled-button:hover {
+  background-color: #7bc7f1;
+  cursor: default;
+}
+
+a#BackButton {
+  position: absolute;
+  top: $header-spacing;
+  left: 0px;
+  color: $light-font-color;
+  font-size: 18px;
+  font-family: $header-font;
+  font-style: normal;
+  font-weight: 400;
+
+  #main-content & {
+    top: 0;
+    left: $gutter;
+  }
+
+  #split-text & {
+    left: $gutter;
+  }
+
+  &:hover {
+    color: #666;
+    cursor: pointer;
+  }
+
+  @media only screen and (max-width: 800px) {
+    left: 15px;
+  }
+}
+
+#Buttons input#PreviousButton {
+  display: none;
+}
