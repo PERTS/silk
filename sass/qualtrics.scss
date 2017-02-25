@@ -47,8 +47,6 @@ html #SurveyEngineBody {
   height: 0;
 }
 
-.JFEScope .Separator~.Separator{ display: none; }
-
 .Skin {
   background-color: $white;
 
@@ -138,12 +136,12 @@ html #SurveyEngineBody {
     }
   }
 
-  /* In the case of Matrix-style questions (with tables) */
-  /* Qualtrics automatically copies the QuestionText into */
-  /* the table <caption>. Normally you don't see this b/c */
-  /* there's a base style of caption {display: none}. We need */
-  /* to make sure the caption stays hidden despite the */
-  /* display: block instruction above. */
+  // In the case of Matrix-style questions (with tables)
+  // Qualtrics automatically copies the QuestionText into
+  // the table <caption>. Normally you don't see this b/c
+  // there's a base style of caption 'display: none'. We need
+  // to make sure the caption stays hidden despite the
+  // display: block instruction above.
   .Matrix caption.QuestionText {
     display: none;
   }
@@ -318,35 +316,47 @@ table span.LabelWrapper {
   }
 }
 
+$split-width: 1000px;
+
 #split-page {
   display: block;
-  width: 1020px;
-  min-height: 650px;
+  width: $split-width;
   margin: 0px auto;
   position: relative;
+  max-width: 100%;
+  padding: 0 0 0 $gutter;
+
+  &:before,
+  &:after {
+    display: table;
+    content: " ";
+    clear: both;
+  }
+}
+
+#split-text,
+#split-image {
+  min-height: 1px;
+  position: relative;
+  float: left;
+  vertical-align: top;
+  max-width: 100%;
+  width: 50%;
 }
 
 #split-text {
-  position: relative;
-  display: inline-block;
-  vertical-align: top;
-  width: 510px;
-  padding: 0px $gutter;
-  height: 650px;
+  padding: 0px $gutter*2 0 0;
   position: relative;
 }
 
 #split-image {
-  position: relative;
-  display: inline-block;
-  vertical-align: top;
-  width: 500px;
   height: 680px;
   overflow: hidden;
-
+  
   .image-block {
     margin: 0px;
   }
+
   .image-caption{
     position: absolute;
     text-align: center;
@@ -356,6 +366,23 @@ table span.LabelWrapper {
     color: $light-font-color;
     font-size: 18px;
     font-style: italic;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  #split-page {
+    padding: 0;
+  }
+
+  #split-text,
+  #split-image {
+    display: block;
+    float: none;
+    width: 100%;
+  }
+
+  #split-text {
+    padding: 0 $gutter;
   }
 }
 
@@ -383,6 +410,7 @@ table span.LabelWrapper {
       list-style: none;
       margin-bottom: 3px;
       font-weight: 300;
+      position: relative;
     }
   }
 
@@ -402,11 +430,7 @@ table span.LabelWrapper {
     position: absolute;
     display: block;
     margin-top: 8px;
-    left: 12px;
-  }
-
-  #split-text ul.perts-bullets li:before {
-    left: 30px;
+    left: -30px;
   }
 }
 

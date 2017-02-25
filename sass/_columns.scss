@@ -53,7 +53,7 @@
     &.col-4.narrow,
     &.col-8,
     &.col-8.wide {
-      width: 100%;
+      width: 100% !important;
     }
   }
 }

@@ -93,32 +93,30 @@
 
 /* line 37, ../sass/_buttons.scss */
 #FakeNextButton {
-  position: absolute;
-  bottom: 0px;
-  right: 110px;
   cursor: pointer;
+  margin-top: 60px;
 }
 
-/* line 44, ../sass/_buttons.scss */
+/* line 42, ../sass/_buttons.scss */
 #Buttons #NextButton:active,
 #Buttons .perts-button:active {
   top: 0px;
   box-shadow: none;
 }
 
-/* line 50, ../sass/_buttons.scss */
+/* line 48, ../sass/_buttons.scss */
 #Buttons #NextButton.disabled-button {
   background-color: #7bc7f1;
   cursor: default;
 }
 
-/* line 55, ../sass/_buttons.scss */
+/* line 53, ../sass/_buttons.scss */
 #Buttons #NextButton.disabled-button:hover {
   background-color: #7bc7f1;
   cursor: default;
 }
 
-/* line 60, ../sass/_buttons.scss */
+/* line 58, ../sass/_buttons.scss */
 a#BackButton {
   position: absolute;
   top: 30px;
@@ -129,44 +127,50 @@ a#BackButton {
   font-style: normal;
   font-weight: 400;
 }
-/* line 70, ../sass/_buttons.scss */
+/* line 68, ../sass/_buttons.scss */
 #main-content a#BackButton {
   top: 0;
   left: 15px;
 }
-/* line 75, ../sass/_buttons.scss */
+/* line 73, ../sass/_buttons.scss */
 #split-text a#BackButton {
   left: 15px;
 }
-/* line 79, ../sass/_buttons.scss */
+@media only screen and (max-width: 767px) {
+  /* line 73, ../sass/_buttons.scss */
+  #split-text a#BackButton {
+    top: 0;
+  }
+}
+/* line 81, ../sass/_buttons.scss */
 a#BackButton:hover {
   color: #666;
   cursor: pointer;
 }
 @media only screen and (max-width: 800px) {
-  /* line 60, ../sass/_buttons.scss */
+  /* line 58, ../sass/_buttons.scss */
   a#BackButton {
     left: 15px;
   }
 }
 
-/* line 89, ../sass/_buttons.scss */
+/* line 91, ../sass/_buttons.scss */
 #Buttons input#PreviousButton {
   display: none;
 }
 
-/* line 3, ../sass/_checkbox-radio.scss */
+/* line 5, ../sass/_checkbox-radio.scss */
 .Skin .MC li input.radio {
   margin-top: 8px;
   margin-right: 18px;
 }
-/* line 8, ../sass/_checkbox-radio.scss */
+/* line 10, ../sass/_checkbox-radio.scss */
 .Skin .MC input[type="radio"] {
   position: relative;
   margin-top: 6px;
   cursor: pointer;
 }
-/* line 13, ../sass/_checkbox-radio.scss */
+/* line 15, ../sass/_checkbox-radio.scss */
 .Skin .MC input[type="radio"]:after {
   content: "";
   position: absolute;
@@ -181,33 +185,33 @@ a#BackButton:hover {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-@media only screen and (min-width: 768px) and (max-width: 1024px) {
-  /* line 13, ../sass/_checkbox-radio.scss */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+  /* line 15, ../sass/_checkbox-radio.scss */
   .Skin .MC input[type="radio"]:after {
     content: none;
   }
 }
-/* line 28, ../sass/_checkbox-radio.scss */
+/* line 31, ../sass/_checkbox-radio.scss */
 .Skin .MC input[type="radio"]:checked:after {
   background-color: #4593d5;
   border: 2px solid #4593d5;
 }
-/* line 34, ../sass/_checkbox-radio.scss */
+/* line 37, ../sass/_checkbox-radio.scss */
 .Skin .MC td input[type="radio"]:after {
   top: -1px;
   left: -4px;
 }
-/* line 39, ../sass/_checkbox-radio.scss */
+/* line 42, ../sass/_checkbox-radio.scss */
 .Skin .MC li input[type="radio"]:after {
   top: -2px;
   left: -2px;
 }
-/* line 44, ../sass/_checkbox-radio.scss */
+/* line 47, ../sass/_checkbox-radio.scss */
 .Skin .MC input.checkbox {
   position: relative;
   margin: 10px 15px;
 }
-/* line 48, ../sass/_checkbox-radio.scss */
+/* line 51, ../sass/_checkbox-radio.scss */
 .Skin .MC input.checkbox:after {
   content: "";
   position: absolute;
@@ -222,40 +226,45 @@ a#BackButton:hover {
   box-sizing: border-box;
 }
 @media (min-width: 768px) and (max-width: 1024px) {
-  /* line 48, ../sass/_checkbox-radio.scss */
+  /* line 51, ../sass/_checkbox-radio.scss */
   .Skin .MC input.checkbox:after {
     content: none;
   }
 }
-/* line 64, ../sass/_checkbox-radio.scss */
+/* line 67, ../sass/_checkbox-radio.scss */
 .Skin .MC input.checkbox:checked:after {
   background-color: #4593d5;
   border-color: #4593d5;
 }
 @media screen and (max-width: 500px) {
-  /* line 72, ../sass/_checkbox-radio.scss */
+  /* line 77, ../sass/_checkbox-radio.scss */
   .Skin .MC table {
     display: block;
   }
-  /* line 75, ../sass/_checkbox-radio.scss */
+  /* line 81, ../sass/_checkbox-radio.scss */
   .Skin .MC table tbody,
   .Skin .MC table tr,
   .Skin .MC table td {
     display: block;
     width: 100%;
   }
-  /* line 82, ../sass/_checkbox-radio.scss */
+  /* line 89, ../sass/_checkbox-radio.scss */
   .Skin .MC table td span.LabelWrapper {
     position: relative;
     padding-left: 45px;
     cursor: pointer;
     text-align: left;
   }
-  /* line 88, ../sass/_checkbox-radio.scss */
+  /* line 95, ../sass/_checkbox-radio.scss */
   .Skin .MC table td span.LabelWrapper br {
     display: none;
   }
-  /* line 92, ../sass/_checkbox-radio.scss */
+  /* line 99, ../sass/_checkbox-radio.scss */
+  .Skin .MC table td span.LabelWrapper label {
+    cursor: pointer;
+    display: block;
+  }
+  /* line 103, ../sass/_checkbox-radio.scss */
   .Skin .MC table td span.LabelWrapper label:after {
     content: "";
     position: absolute;
@@ -272,19 +281,19 @@ a#BackButton:hover {
     top: -1px;
     left: 10px;
   }
-  /* line 104, ../sass/_checkbox-radio.scss */
+  /* line 116, ../sass/_checkbox-radio.scss */
   .Skin .MC table td span.LabelWrapper label.q-checked:after {
     background-color: #4593d5;
     border-color: #4593d5;
   }
-  /* line 110, ../sass/_checkbox-radio.scss */
+  /* line 126, ../sass/_checkbox-radio.scss */
   .Skin .MC table td.ControlContainer {
     height: 0;
     visibility: hidden;
   }
 }
 
-/* line 120, ../sass/_checkbox-radio.scss */
+/* line 136, ../sass/_checkbox-radio.scss */
 #SurveyEngineBody.iOS,
 #SurveyEngineBody.Android {
   /* Mobile controls are bigger, so we need to adjust the ::after bits (which */
@@ -293,14 +302,14 @@ a#BackButton:hover {
   /* Qualtrics adds weird list item markers using :before content on mobile */
   /* Allows for scrolling MC questions on mobile devices */
 }
-/* line 125, ../sass/_checkbox-radio.scss */
+/* line 141, ../sass/_checkbox-radio.scss */
 #SurveyEngineBody.iOS .Skin .MC input.checkbox::after,
 #SurveyEngineBody.Android .Skin .MC input.checkbox::after {
   top: -1px;
   height: 30px;
   width: 30px;
 }
-/* line 132, ../sass/_checkbox-radio.scss */
+/* line 148, ../sass/_checkbox-radio.scss */
 #SurveyEngineBody.iOS input.checkbox:checked::after,
 #SurveyEngineBody.Android input.checkbox:checked::after {
   content: "";
@@ -309,7 +318,7 @@ a#BackButton:hover {
   top: -1px;
   left: -1px;
 }
-/* line 140, ../sass/_checkbox-radio.scss */
+/* line 156, ../sass/_checkbox-radio.scss */
 #SurveyEngineBody.iOS .Skin .MC input[type="radio"]::after,
 #SurveyEngineBody.iOS .Skin .MC input[type="radio"]::after,
 #SurveyEngineBody.Android .Skin .MC input[type="radio"]::after,
@@ -320,14 +329,14 @@ a#BackButton:hover {
   -webkit-border-radius: 15px;
   border-radius: 15px;
 }
-/* line 148, ../sass/_checkbox-radio.scss */
+/* line 164, ../sass/_checkbox-radio.scss */
 #SurveyEngineBody.iOS .Skin ul li:before,
 #SurveyEngineBody.iOS .Skin ul li:before,
 #SurveyEngineBody.Android .Skin ul li:before,
 #SurveyEngineBody.Android .Skin ul li:before {
   content: none;
 }
-/* line 154, ../sass/_checkbox-radio.scss */
+/* line 170, ../sass/_checkbox-radio.scss */
 #SurveyEngineBody.iOS .Skin #Questions .QuestionOuter.MC fieldset .QuestionBody,
 #SurveyEngineBody.iOS .Skin #Questions .QuestionOuter.MC fieldset .QuestionBody,
 #SurveyEngineBody.Android .Skin #Questions .QuestionOuter.MC fieldset .QuestionBody,
@@ -338,28 +347,28 @@ a#BackButton:hover {
   -ms-overflow-x: auto;
 }
 
-/* line 164, ../sass/_checkbox-radio.scss */
+/* line 180, ../sass/_checkbox-radio.scss */
 #SurveyEngineBody.iOS .Skin .MC input.checkbox::after {
   left: -1px;
 }
-/* line 169, ../sass/_checkbox-radio.scss */
+/* line 185, ../sass/_checkbox-radio.scss */
 #SurveyEngineBody.iOS .Skin .MC td input[type="radio"]::after,
 #SurveyEngineBody.iOS .Skin .MC li input[type="radio"]::after {
   top: -1px;
   left: -1px;
 }
 
-/* line 177, ../sass/_checkbox-radio.scss */
+/* line 193, ../sass/_checkbox-radio.scss */
 #SurveyEngineBody.Android .Skin .MC input.checkbox::after {
   left: 0px;
 }
-/* line 181, ../sass/_checkbox-radio.scss */
+/* line 197, ../sass/_checkbox-radio.scss */
 #SurveyEngineBody.Android .Skin .MC td input[type="radio"]::after,
 #SurveyEngineBody.Android .Skin .MC li input[type="radio"]::after {
   top: -1px;
   left: 0;
 }
-/* line 187, ../sass/_checkbox-radio.scss */
+/* line 203, ../sass/_checkbox-radio.scss */
 #SurveyEngineBody.Android .Skin .MC td input[type="radio"]:checked:after,
 #SurveyEngineBody.Android .Skin .MC li input[type="radio"]:checked:after {
   top: -2px;
@@ -427,7 +436,7 @@ a#BackButton:hover {
 @media only screen and (max-width: 800px) {
   /* line 52, ../sass/_columns.scss */
   .col.col-4, .col.col-4.narrow, .col.col-8, .col.col-8.wide {
-    width: 100%;
+    width: 100% !important;
   }
 }
 
@@ -794,41 +803,30 @@ html #SurveyEngineBody {
 }
 
 /* line 50, ../sass/qualtrics.scss */
-.JFEScope .Separator ~ .Separator {
-  display: none;
-}
-
-/* line 52, ../sass/qualtrics.scss */
 .Skin {
   background-color: #fff;
-  /* In the case of Matrix-style questions (with tables) */
-  /* Qualtrics automatically copies the QuestionText into */
-  /* the table <caption>. Normally you don't see this b/c */
-  /* there's a base style of caption {display: none}. We need */
-  /* to make sure the caption stays hidden despite the */
-  /* display: block instruction above. */
 }
-/* line 55, ../sass/qualtrics.scss */
+/* line 53, ../sass/qualtrics.scss */
 .Skin .Separator {
   margin: 0;
   margin-bottom: -30px;
   background-color: transparent;
 }
-/* line 60, ../sass/qualtrics.scss */
+/* line 58, ../sass/qualtrics.scss */
 .Skin .Separator ~ .Separator {
   background-color: transparent;
 }
-/* line 65, ../sass/qualtrics.scss */
+/* line 63, ../sass/qualtrics.scss */
 .Skin #Logo,
 .Skin #PushStickyFooter,
 .Skin #Plug {
   display: none !important;
 }
-/* line 71, ../sass/qualtrics.scss */
+/* line 69, ../sass/qualtrics.scss */
 .Skin #Plug {
   background-color: #e3e3e3;
 }
-/* line 75, ../sass/qualtrics.scss */
+/* line 73, ../sass/qualtrics.scss */
 .Skin #Header {
   position: relative;
   display: block;
@@ -836,12 +834,12 @@ html #SurveyEngineBody {
   height: 80px;
   background-color: #3faeec;
 }
-/* line 83, ../sass/qualtrics.scss */
+/* line 81, ../sass/qualtrics.scss */
 .Skin #Footer {
   background-color: #e3e3e3;
   height: 80px;
 }
-/* line 87, ../sass/qualtrics.scss */
+/* line 85, ../sass/qualtrics.scss */
 .Skin #Footer .foot-text {
   padding-top: 26px;
   text-align: center;
@@ -851,33 +849,33 @@ html #SurveyEngineBody {
   font-size: 18px;
   color: #999;
 }
-/* line 98, ../sass/qualtrics.scss */
+/* line 96, ../sass/qualtrics.scss */
 .Skin #Questions {
   padding: 0px;
   min-height: 400px;
 }
-/* line 103, ../sass/qualtrics.scss */
+/* line 101, ../sass/qualtrics.scss */
 .Skin .QuestionOuter {
   padding: 0px;
   overflow-x: auto;
   -ms-overflow-x: auto;
   -ms-overflow-style: auto;
 }
-/* line 109, ../sass/qualtrics.scss */
+/* line 107, ../sass/qualtrics.scss */
 .Skin .QuestionOuter .Inner {
   padding: 0px;
   /* Prevent wide content from scrolling, and prevent horiz scrollbar */
   overflow-x: hidden;
 }
-/* line 116, ../sass/qualtrics.scss */
+/* line 114, ../sass/qualtrics.scss */
 .Skin #ProgressBar {
   display: none;
 }
-/* line 120, ../sass/qualtrics.scss */
+/* line 118, ../sass/qualtrics.scss */
 .Skin .QuestionText {
   padding: 0;
 }
-/* line 124, ../sass/qualtrics.scss */
+/* line 122, ../sass/qualtrics.scss */
 .Skin .QuestionBody,
 .Skin .MC .QuestionText,
 .Skin .TE .QuestionText,
@@ -889,7 +887,7 @@ html #SurveyEngineBody {
   position: relative;
 }
 @media only screen and (max-width: 800px) {
-  /* line 124, ../sass/qualtrics.scss */
+  /* line 122, ../sass/qualtrics.scss */
   .Skin .QuestionBody,
   .Skin .MC .QuestionText,
   .Skin .TE .QuestionText,
@@ -901,50 +899,50 @@ html #SurveyEngineBody {
     box-sizing: border-box;
   }
 }
-/* line 147, ../sass/qualtrics.scss */
+/* line 145, ../sass/qualtrics.scss */
 .Skin .Matrix caption.QuestionText {
   display: none;
 }
-/* line 151, ../sass/qualtrics.scss */
+/* line 149, ../sass/qualtrics.scss */
 .Skin .QuestionText {
   margin: 0px;
 }
-/* line 155, ../sass/qualtrics.scss */
+/* line 153, ../sass/qualtrics.scss */
 .Skin .QuestionBody table.ChoiceStructure.narrow-table {
   width: 300px;
   margin-top: 25px;
 }
-/* line 160, ../sass/qualtrics.scss */
+/* line 158, ../sass/qualtrics.scss */
 .Skin .QuestionBody table.ChoiceStructure.narrow-table td {
   padding: 12px 0;
 }
-/* line 166, ../sass/qualtrics.scss */
+/* line 164, ../sass/qualtrics.scss */
 .Skin .MC .QuestionBody {
   margin: 20px auto 25px auto;
 }
-/* line 170, ../sass/qualtrics.scss */
+/* line 168, ../sass/qualtrics.scss */
 .Skin .MC .QuestionText {
   font-weight: 300;
   font-size: 21px;
   color: #333;
 }
-/* line 176, ../sass/qualtrics.scss */
+/* line 174, ../sass/qualtrics.scss */
 .Skin .MC table {
   margin-bottom: 55px;
 }
-/* line 180, ../sass/qualtrics.scss */
+/* line 178, ../sass/qualtrics.scss */
 .Skin .MC input.TextEntryBox.InputText {
   left: 0px;
   margin: 5px 0px 15px 0px;
 }
-/* line 186, ../sass/qualtrics.scss */
+/* line 184, ../sass/qualtrics.scss */
 .Skin .ML *,
 .Skin .SL * {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-/* line 191, ../sass/qualtrics.scss */
+/* line 189, ../sass/qualtrics.scss */
 .Skin .ML .ChoiceStructure,
 .Skin .SL .ChoiceStructure.ChoiceStructureStyled {
   background-color: #3faeec;
@@ -952,7 +950,7 @@ html #SurveyEngineBody {
   margin: 30px 0px;
   position: relative;
 }
-/* line 199, ../sass/qualtrics.scss */
+/* line 197, ../sass/qualtrics.scss */
 .Skin .ML .ChoiceStructure textarea,
 .Skin .SL .ChoiceStructure.ChoiceStructureStyled input {
   width: 100% !important;
@@ -969,20 +967,20 @@ html #SurveyEngineBody {
   -webkit-border-radius: 0;
   border-radius: 0;
 }
-/* line 214, ../sass/qualtrics.scss */
+/* line 212, ../sass/qualtrics.scss */
 .Skin .SL .ChoiceStructure.ChoiceStructureStyled input {
   height: 50px !important;
   margin: 0px;
 }
 
-/* line 220, ../sass/qualtrics.scss */
+/* line 218, ../sass/qualtrics.scss */
 li span.LabelWrapper {
   font-weight: 300;
   font-size: 21px;
   color: #333;
 }
 
-/* line 226, ../sass/qualtrics.scss */
+/* line 224, ../sass/qualtrics.scss */
 table span.LabelWrapper {
   font-weight: 500;
   font-size: 15px;
@@ -992,7 +990,7 @@ table span.LabelWrapper {
   display: block;
 }
 
-/* line 235, ../sass/qualtrics.scss */
+/* line 233, ../sass/qualtrics.scss */
 .open-response_header {
   position: absolute;
   top: 12px;
@@ -1001,7 +999,7 @@ table span.LabelWrapper {
 }
 
 /* Text formatting */
-/* line 244, ../sass/qualtrics.scss */
+/* line 242, ../sass/qualtrics.scss */
 #section-header {
   text-align: center;
   padding: 0px 0px 45px 0;
@@ -1013,7 +1011,7 @@ table span.LabelWrapper {
   font-weight: 400;
 }
 
-/* line 255, ../sass/qualtrics.scss */
+/* line 253, ../sass/qualtrics.scss */
 .Skin h1,
 .Skin #title-text {
   color: #4593d5;
@@ -1022,7 +1020,7 @@ table span.LabelWrapper {
   font-weight: 700;
 }
 
-/* line 263, ../sass/qualtrics.scss */
+/* line 261, ../sass/qualtrics.scss */
 .Skin p {
   font-size: 21px;
   line-height: 30px;
@@ -1030,7 +1028,7 @@ table span.LabelWrapper {
   font-weight: 300;
 }
 
-/* line 270, ../sass/qualtrics.scss */
+/* line 268, ../sass/qualtrics.scss */
 .callout-text {
   font-size: 21px;
   line-height: 30px;
@@ -1040,7 +1038,7 @@ table span.LabelWrapper {
   font-weight: 500;
 }
 
-/* line 279, ../sass/qualtrics.scss */
+/* line 277, ../sass/qualtrics.scss */
 .instruction-text {
   font-size: 18px;
   color: #999;
@@ -1048,7 +1046,7 @@ table span.LabelWrapper {
   margin-bottom: 25px;
 }
 
-/* line 286, ../sass/qualtrics.scss */
+/* line 284, ../sass/qualtrics.scss */
 .footnote-text {
   font-size: 14px;
   color: #999;
@@ -1056,7 +1054,7 @@ table span.LabelWrapper {
 }
 
 /* Setting up custom containers */
-/* line 294, ../sass/qualtrics.scss */
+/* line 292, ../sass/qualtrics.scss */
 #main-content *,
 #split-page *,
 #splash-page * {
@@ -1065,7 +1063,7 @@ table span.LabelWrapper {
   box-sizing: border-box;
 }
 
-/* line 300, ../sass/qualtrics.scss */
+/* line 298, ../sass/qualtrics.scss */
 #main-content,
 #splash-page {
   display: block;
@@ -1080,12 +1078,12 @@ table span.LabelWrapper {
   box-sizing: border-box;
 }
 
-/* line 312, ../sass/qualtrics.scss */
+/* line 310, ../sass/qualtrics.scss */
 #splash-page {
   margin: 100px auto 20px auto;
   text-align: center;
 }
-/* line 316, ../sass/qualtrics.scss */
+/* line 314, ../sass/qualtrics.scss */
 #splash-page h1 {
   font-size: 32px;
 }
@@ -1093,37 +1091,46 @@ table span.LabelWrapper {
 /* line 321, ../sass/qualtrics.scss */
 #split-page {
   display: block;
-  width: 1020px;
-  min-height: 650px;
+  width: 1000px;
   margin: 0px auto;
   position: relative;
+  max-width: 100%;
+  padding: 0 0 0 15px;
 }
-
 /* line 329, ../sass/qualtrics.scss */
-#split-text {
+#split-page:before, #split-page:after {
+  display: table;
+  content: " ";
+  clear: both;
+}
+
+/* line 337, ../sass/qualtrics.scss */
+#split-text,
+#split-image {
+  min-height: 1px;
   position: relative;
-  display: inline-block;
+  float: left;
   vertical-align: top;
-  width: 510px;
-  padding: 0px 15px;
-  height: 650px;
+  max-width: 100%;
+  width: 50%;
+}
+
+/* line 347, ../sass/qualtrics.scss */
+#split-text {
+  padding: 0px 30px 0 0;
   position: relative;
 }
 
-/* line 339, ../sass/qualtrics.scss */
+/* line 352, ../sass/qualtrics.scss */
 #split-image {
-  position: relative;
-  display: inline-block;
-  vertical-align: top;
-  width: 500px;
   height: 680px;
   overflow: hidden;
 }
-/* line 347, ../sass/qualtrics.scss */
+/* line 356, ../sass/qualtrics.scss */
 #split-image .image-block {
   margin: 0px;
 }
-/* line 350, ../sass/qualtrics.scss */
+/* line 360, ../sass/qualtrics.scss */
 #split-image .image-caption {
   position: absolute;
   text-align: center;
@@ -1135,20 +1142,39 @@ table span.LabelWrapper {
   font-style: italic;
 }
 
+@media only screen and (max-width: 767px) {
+  /* line 373, ../sass/qualtrics.scss */
+  #split-page {
+    padding: 0;
+  }
+
+  /* line 377, ../sass/qualtrics.scss */
+  #split-text,
+  #split-image {
+    display: block;
+    float: none;
+    width: 100%;
+  }
+
+  /* line 384, ../sass/qualtrics.scss */
+  #split-text {
+    padding: 0 15px;
+  }
+}
 /* Hidden container */
-/* line 365, ../sass/qualtrics.scss */
+/* line 392, ../sass/qualtrics.scss */
 .hidden-container.hidden-container--hidden {
   display: none;
 }
 
 /* Custom bullet lists */
-/* line 374, ../sass/qualtrics.scss */
+/* line 401, ../sass/qualtrics.scss */
 .Skin ul.perts-bullets,
 .Skin ol.perts-bullets {
   margin-top: 20px;
   margin-bottom: 20px;
 }
-/* line 379, ../sass/qualtrics.scss */
+/* line 406, ../sass/qualtrics.scss */
 .Skin ul.perts-bullets li,
 .Skin ol.perts-bullets li {
   font-size: 21px;
@@ -1157,15 +1183,16 @@ table span.LabelWrapper {
   list-style: none;
   margin-bottom: 3px;
   font-weight: 300;
+  position: relative;
 }
-/* line 389, ../sass/qualtrics.scss */
+/* line 417, ../sass/qualtrics.scss */
 .Skin ul.perts-bullets,
 .Skin ul.perts-bullets li,
 .Skin .QuestionText ul.perts-bullets,
 .Skin .QuestionText ul.perts-bullets li {
   list-style-type: none;
 }
-/* line 396, ../sass/qualtrics.scss */
+/* line 424, ../sass/qualtrics.scss */
 .Skin ul.perts-bullets li:before {
   content: "";
   height: 12px;
@@ -1177,26 +1204,22 @@ table span.LabelWrapper {
   position: absolute;
   display: block;
   margin-top: 8px;
-  left: 12px;
-}
-/* line 408, ../sass/qualtrics.scss */
-.Skin #split-text ul.perts-bullets li:before {
-  left: 30px;
+  left: -30px;
 }
 
 /* User input fields (open-response and short-form) */
-/* line 417, ../sass/qualtrics.scss */
+/* line 441, ../sass/qualtrics.scss */
 .Skin .open-response {
   background-color: #3faeec;
   margin: 20px 0px;
   padding: 15px;
 }
-/* line 422, ../sass/qualtrics.scss */
+/* line 446, ../sass/qualtrics.scss */
 .Skin .open-response .open-response_header {
   color: #fff;
   padding-bottom: 15px;
 }
-/* line 427, ../sass/qualtrics.scss */
+/* line 451, ../sass/qualtrics.scss */
 .Skin .open-response textarea.open-response_input {
   width: 100%;
   height: 250px;
@@ -1212,7 +1235,7 @@ table span.LabelWrapper {
   -webkit-border-radius: 0;
   border-radius: 0;
 }
-/* line 442, ../sass/qualtrics.scss */
+/* line 466, ../sass/qualtrics.scss */
 .Skin input.short-form,
 .Skin input[type="TEXT"] {
   border-style: none;
@@ -1229,7 +1252,7 @@ table span.LabelWrapper {
   -webkit-border-radius: 0;
   border-radius: 0;
 }
-/* line 457, ../sass/qualtrics.scss */
+/* line 481, ../sass/qualtrics.scss */
 .Skin input[type="TEXT"] {
   margin-bottom: 20px;
   -moz-box-sizing: border-box;
@@ -1238,7 +1261,7 @@ table span.LabelWrapper {
 }
 
 /* Hide timing questions during previews so they look more realistic. */
-/* line 465, ../sass/qualtrics.scss */
+/* line 489, ../sass/qualtrics.scss */
 .QuestionOuter.Timing {
   display: none;
 }
@@ -1246,7 +1269,7 @@ table span.LabelWrapper {
 /* Fixes for iPhone and iPad */
 @media only screen and (max-device-width: 1024px) and (min-device-width: 768px) {
   /* Qualtrics applies a 90% max width here. Stupid. */
-  /* line 472, ../sass/qualtrics.scss */
+  /* line 496, ../sass/qualtrics.scss */
   html #SurveyEngineBody.iOS .Skin .SkinInner,
   html #SurveyEngineBody.Android .Skin .SkinInner {
     max-width: 100%;
@@ -1254,13 +1277,13 @@ table span.LabelWrapper {
 }
 /* Override user agent stylesheets on mobile to allow scrolling within
  * fieldset elements */
-/* line 480, ../sass/qualtrics.scss */
+/* line 504, ../sass/qualtrics.scss */
 fieldset {
   min-width: 0;
 }
 
 @-moz-document url-prefix() {
-  /* line 485, ../sass/qualtrics.scss */
+  /* line 509, ../sass/qualtrics.scss */
   fieldset {
     display: table-cell;
   }

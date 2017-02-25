@@ -35,10 +35,8 @@
 }
 
 #FakeNextButton {
-  position: absolute;
-  bottom: 0px;
-  right: 110px;
   cursor: pointer;
+  margin-top: 60px;
 }
 
 #Buttons #NextButton:active,
@@ -74,6 +72,10 @@ a#BackButton {
 
   #split-text & {
     left: $gutter;
+
+    @media only screen and (max-width: 767px) {
+      top: 0;
+    }
   }
 
   &:hover {
