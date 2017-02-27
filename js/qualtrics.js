@@ -951,10 +951,11 @@ Qualtrics.SurveyEngine.addOnload(function () {
     });
 
     // Set up footer.
+    var currentYear = (new Date()).getFullYear();
     $j('#Footer').html(
         '<!-- Set in qualtrics.js -->' +
         '<div class="foot-text">' +
-            '&copy; 2015 Stanford University. All Rights Reserved.' +
+            '&copy;' + currentYear + ' Stanford University. All Rights Reserved.' +
         '</div>'
     );
 
