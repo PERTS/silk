@@ -127,80 +127,157 @@ if (typeof $j === 'undefined') {
 
 
 
-// * adds the ability to iterate a callback over an array
-// to the core Array datatype (and overwrites whatever
-// non-standard method supplied by the browser)
-// * notably, it returns an array of all the values returned
-// by the iterated function
-Array.prototype.forEach = function (callback, thisArg) {
-    'use strict';
-    var T, k, r, results = [];
+// Production steps of ECMA-262, Edition 5, 15.4.4.18
+// Reference: http://es5.github.io/#x15.4.4.18
+if (typeof Array.prototype.forEach !== 'function') {
+    Array.prototype.forEach = function(callback, thisArg) {
+        /* jshint bitwise: false */
+        var T, k;
+
+        if (this === null || this === undefined) {
+            throw new TypeError(' this is null or not defined');
+        }
+
+        // 1. Let O be the result of calling ToObject passing the |this| value
+        // as the argument.
+        var O = Object(this);
+
+        // 2. Let lenValue be the result of calling the Get internal method of
+        //     O with the argument "length".
+        // 3. Let len be ToUint32(lenValue).
+        var len = O.length >>> 0;
+
+        // 4. If IsCallable(callback) is false, throw a TypeError exception.
+        // See: http://es5.github.com/#x9.11
+        if (typeof callback !== 'function') {
+            throw new TypeError(callback + ' is not a function');
+        }
+
+        // 5. If thisArg was supplied, let T be thisArg; else let T be undefined.
+        if (arguments.length > 1) {
+            T = thisArg;
+        }
+
+        // 6. Let k be 0
+        k = 0;
+
+        // 7. Repeat, while k < len
+        while (k < len) {
+
+            var kValue;
+
+            // a. Let Pk be ToString(k).
+            //     This is implicit for LHS operands of the in operator
+            // b. Let kPresent be the result of calling the HasProperty
+            //     internal method of O with argument Pk. This step can be
+            //     combined with c
+            // c. If kPresent is true, then
+            if (k in O) {
+
+                // i. Let kValue be the result of calling the Get internal
+                //     method of O with argument Pk.
+                kValue = O[k];
+
+                // ii. Call the Call internal method of callback with T as the
+                //      this value and argument list containing kValue, k,
+                //      and O.
+                callback.call(T, kValue, k, O);
+            }
+            // d. Increase k by 1.
+            k += 1;
+        }
+        // 8. return undefined
+    };
+}
+
+// Production steps of ECMA-262, Edition 5, 15.4.4.19
+// Reference: http://es5.github.io/#x15.4.4.19
+if (!Array.prototype.map) {
+
+  Array.prototype.map = function(callback/*, thisArg*/) {
+
+    var T, A, k;
 
     if (this == null) {
-        throw new TypeError(' this is null or not defined');
+      throw new TypeError('this is null or not defined');
     }
 
+    // 1. Let O be the result of calling ToObject passing the |this|
+    //    value as the argument.
     var O = Object(this);
+
+    // 2. Let lenValue be the result of calling the Get internal
+    //    method of O with the argument "length".
+    // 3. Let len be ToUint32(lenValue).
     var len = O.length >>> 0;
-    if (typeof callback !== "function") {
-        throw new TypeError(callback + ' is not a function');
+
+    // 4. If IsCallable(callback) is false, throw a TypeError exception.
+    // See: http://es5.github.com/#x9.11
+    if (typeof callback !== 'function') {
+      throw new TypeError(callback + ' is not a function');
     }
 
+    // 5. If thisArg was supplied, let T be thisArg; else let T be undefined.
     if (arguments.length > 1) {
-        T = thisArg;
+      T = arguments[1];
     }
 
+    // 6. Let A be a new array created as if by the expression new Array(len)
+    //    where Array is the standard built-in constructor with that name and
+    //    len is the value of len.
+    A = new Array(len);
+
+    // 7. Let k be 0
     k = 0;
+
+    // 8. Repeat, while k < len
     while (k < len) {
-        var kValue;
-        if (k in O) {
-            kValue = O[k];
-            r = callback.call(T, kValue, k, O);
-            if (r !== undefined) {
-                results.push(r);
-            }
-        }
-        k++;
+
+      var kValue, mappedValue;
+
+      // a. Let Pk be ToString(k).
+      //   This is implicit for LHS operands of the in operator
+      // b. Let kPresent be the result of calling the HasProperty internal
+      //    method of O with argument Pk.
+      //   This step can be combined with c
+      // c. If kPresent is true, then
+      if (k in O) {
+
+        // i. Let kValue be the result of calling the Get internal
+        //    method of O with argument Pk.
+        kValue = O[k];
+
+        // ii. Let mappedValue be the result of calling the Call internal
+        //     method of callback with T as the this value and argument
+        //     list containing kValue, k, and O.
+        mappedValue = callback.call(T, kValue, k, O);
+
+        // iii. Call the DefineOwnProperty internal method of A with arguments
+        // Pk, Property Descriptor
+        // { Value: mappedValue,
+        //   Writable: true,
+        //   Enumerable: true,
+        //   Configurable: true },
+        // and false.
+
+        // In browsers that support Object.defineProperty, use the following:
+        // Object.defineProperty(A, k, {
+        //   value: mappedValue,
+        //   writable: true,
+        //   enumerable: true,
+        //   configurable: true
+        // });
+
+        // For best browser support, use the following:
+        A[k] = mappedValue;
+      }
+      // d. Increase k by 1.
+      k++;
     }
 
-    return results;
-};
-
-function forEach(o, f, thisObj) {
-    'use strict';
-    // Allows comprehension-like syntax for arrays and object-dictionaries.
-    // Iterating functions have arguments (value, index) for arrays and
-    // (propertyName, value) for objects. The values returned by the iterating
-    // function are available as an array returned by forEach. If the iterating
-    // function returns undefined then no value is pushed to the result.
-    // Array example:
-    // var evens = forEach([1,2,3,4], function (x) {
-    //    if (x % 2 === 0) { return x; }
-    // });
-    // // evens equals [2, 4];
-    // Object example:
-    // var keys = forEach({key1: 'value1', key2: 'value2'}, function (k, v) {
-    //    return k;
-    // });
-    // // keys equals ['key1', 'key2'];
-    var p;
-    var results = [];
-    var returnValue;
-    if (typeof f !== 'function') {
-        throw new TypeError();
-    }
-    if (o instanceof Array) {
-        return o.forEach(f, thisObj);
-    }
-    for (p in o) {
-        if (Object.prototype.hasOwnProperty.call(o, p)) {
-            returnValue = f.call(thisObj, p, o[p], o);
-            if (returnValue !== undefined) {
-                results.push(returnValue);
-            }
-        }
-    }
-    return results;
+    // 9. return A
+    return A;
+  };
 }
 
 
@@ -282,8 +359,7 @@ function PERTS_MODULE() {
             .css('margin-bottom', marginBottom + 'px')
             .appendTo(buttonContainer);
         // Copy certain attributes over from the original button.
-        var attrToCopy = ['title', 'name', 'value'];
-        forEach(attrToCopy, function (attr) {
+        ['title', 'name', 'value'].forEach(function (attr) {
             blockedNextButton.attr(attr, nextButton.attr(attr));
         });
 
@@ -699,7 +775,7 @@ function PERTS_MODULE() {
         p.console = {};
     }
     // For anything missing, fill in no-op functions.
-    forEach(['log', 'warn', 'error', 'debug'], function (method) {
+    ['log', 'warn', 'error', 'debug'].forEach(function (method) {
         if (!window.console || !window.console[method]) {
             p.console[method] = function () {};
         }
