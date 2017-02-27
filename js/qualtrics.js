@@ -11,10 +11,23 @@
 
 <script src="//use.typekit.net/qnb2yzi.js"></script>
 <script src="//www.perts.net/static/silk/js/qualtrics.js"></script>
+<!-- Yosemite style -->
 <script>
     // Specify what program and domain we're using.
     perts.domain('https://www.perts.net');  // required, adjust as needed
     perts.programAbbreviation('NP16S');  // only if using audio
+    perts.getPdUrl = perts.getYosemitePdUrl;
+</script>
+<!-- Neptune style -->
+<script>
+    // Specify what program and domain we're using.
+    perts.domain('https://www.perts.net');  // required, adjust as needed
+    perts.programAbbreviation('NP16S');  // only if using audio
+    perts.getPdUrl = perts.getNeptunePdUrl;
+    // Neptune uses a MySQL table for pd, so tons of write contention could be
+    // a problem. Only save data when necessary. There's a build-in retry up
+    // to 3 attempts.
+    perts.disableAutomaticPdSave = true;
 </script>
 <link href="//www.perts.net/static/silk/css/qualtrics.css" rel="stylesheet" />
 
@@ -29,10 +42,9 @@
 //
 // API to be used by survey writers:
 //
-// perts.disableCrossSiteGif - bool, if set to true, will not use the cross
-//     site gif to send progress data back to the platform; be CAREFUL with
-//     this! if you leave it set when you're done testing, you'll break the
-//     program!
+// perts.disableAutomaticPdSave - bool, if set to true, will not automatically
+//     use the cross site gif to send progress data back to the platform. It
+//     will only do so when calling perts.data(foo) as a setter.
 //
 // perts.programAbbreviation() - Call to set program abbrevation,
 //     e.g. perts.programAbbreviation('NP15S'), before using API.
@@ -47,7 +59,8 @@
 // perts.previous() - go to previous page, alias of
 //     Qualtrics.SurveyEngine.navClick(event, 'PreviousButton');
 //
-// perts.data() - embedded data getter/setter
+// perts.data() - embedded data getter/setter. Setting also writes via the
+//     cross_site.gif
 //     variableName - str, the name of the embedded data to get
 //     value - str, optional, a new value to set
 //
@@ -578,11 +591,33 @@ function PERTS_MODULE() {
             // the input value.
             Qualtrics.SurveyEngine.setEmbeddedData(varName, value);
             input.val(value);
+
+            // Also request the platform cross_site.gif to communciate data
+            // back. This is the canonical way of triggering writes to Neptune.
+            var url = p.getPdUrl(varName);
+            var maxAttempts = 3;
+            var numAttempts = 0;
+            var retry = function () {
+                numAttempts += 1;
+                if (numAttempts < maxAttempts) {
+                    p.crossSiteGif(url, retry);
+                } else {
+                    p.console.error("Failed to write pd after maxAttempts.");
+                }
+            };
+            p.crossSiteGif(url, retry);
         }
+
         // Either way, get.
         return input.val();
         // While there does appear to be a function called
         // Qualtrics.SurveyEngine.getEmbeddedData(), it doesn't appear to work!
+    };
+
+    p.crossSiteGif = function (url, errorCallback) {
+        $j("<img/>")
+            .on('error', errorCallback)
+            .attr("src", url);
     };
 
     p.getAudioUrl = function (fileName) {
@@ -754,12 +789,36 @@ function PERTS_MODULE() {
 
         // Under JFE, the DOM is constantly being replaced from page to page,
         // but the javascript environment is unchanged. That means DOM node
-        // references hang around, but their nodes are relevant to the current
-        // page. Fix this with a flag tell the module the DOM references need
-        // refreshing, and by making sure important references are cleared.
+        // references hang around, but their nodes are no longer relevant to
+        // the current page. Fix this with a flag tell the module the DOM
+        // references need refreshing, and by making sure important references
+        // are cleared.
         DOMInitialized = false;
         blockedNextButton = undefined;
         blockedNavMessage = undefined;
+    };
+
+    // Must be set in survey head!
+    p.getPdUrl = undefined;
+
+    p.getYosemitePdUrl = function () {
+        var embeddedData = ['variable', 'value', 'user', 'program',
+                            'activity_ordinal'];
+        var pairs = embeddedData.map(function (ed) {
+            return ed + '=' + encodeURIComponent(perts.data(ed));
+        });
+        return perts.domain() + '/api/put/pd/cross_site.gif?' + pairs.join('&');
+    };
+
+
+    p.getNeptunePdUrl = function () {
+        var participantId = perts.data('participant_id');
+        var embeddedData = ['key', 'value', 'survey_id'];
+        var pairs = embeddedData.map(function (ed) {
+            return ed + '=' + encodeURIComponent(perts.data(ed));
+        });
+        return perts.domain() + '/api/participants/' + participantId +
+            '/data/cross_site.gif?' + pairs.join('&');
     };
 
     // IE doesn't always have console.log, and, like the piece of fossilized
@@ -959,23 +1018,7 @@ Qualtrics.SurveyEngine.addOnload(function () {
         '</div>'
     );
 
-    // Get the data embedded in the header and construct an image tag that will
-    // send the data back to the server.
-    var img = document.createElement('img');
-    var variableNode = document.getElementById('variable');
-    var valueNode = document.getElementById('value');
-    var scopeNode = document.getElementById('user');
-    var programNode = document.getElementById('program');
-    var ordinalNode = document.getElementById('activity_ordinal');
-    var url = perts.domain() + '/api/put/pd/cross_site.gif?' +
-        'variable=' + variableNode.value +
-        '&value=' + valueNode.value +
-        '&scope=' + scopeNode.value +
-        '&program=' + programNode.value;
-    // Include the activity ordinal, if present.
-    if (ordinalNode && ordinalNode.value) {
-        url += '&activity_ordinal=' + ordinalNode.value;
-    }
+
     // Don't load the url if the needed data hasn't been inlined. This happens
     // when previewing a question in Qualtrics.
     // We test for preview mode by looking for Qualtrics inlining code that
@@ -989,14 +1032,21 @@ Qualtrics.SurveyEngine.addOnload(function () {
         perts.console.log(
             "PERTS detected that this page is being viewed as a " +
             "preview and is NOT sending data back to the Platform.");
-    } else if (perts.disableCrossSiteGif === true) {
+    } else if (perts.disableAutomaticPdSave === true) {
         // Notify developers that data sync has been skipped.
         perts.console.log(
-            "The cross site gif has been DISABLED in this survey. Data is " +
-            "NOT being sent back to the Platform.");
+            "Automatic saving has been DISABLED in this survey. Data is " +
+            "NOT being sent back to the Platform unless explicitly saved " +
+            "via perts.data().");
     } else {
-        // This isn't a preview; data is present. Cross sit gif is enabled.
-        // Tell the image to load the url.
-        img.src = url;
+        // This isn't a preview; data is present. Cross site gif is enabled.
+        // Get the data embedded in the header and construct an image tag that
+        // will send the data back to the server.
+        if (!perts.getPdUrl) {
+            throw new Error("perts.getPdUrl must be set in the head");
+        }
+        perts.crossSiteGif(perts.getPdUrl(), function errorCallback() {
+            perts.console.error("Error saving pd.");
+        });
     }
 });
