@@ -623,9 +623,9 @@ function PERTS_MODULE() {
 
             // Also request the platform cross_site.gif to communciate data
             // back. This is the canonical way of triggering writes to Neptune.
-            var url = p.getPdUrl(varName);
             var maxAttempts = 3;
             var numAttempts = 0;
+            var url = p.getPdUrl();
             var retry = function () {
                 numAttempts += 1;
                 if (numAttempts < maxAttempts) {
@@ -644,6 +644,10 @@ function PERTS_MODULE() {
     };
 
     p.crossSiteGif = function (url, errorCallback) {
+        if (!url) {
+            p.console.log("Blank url; perts.crossSiteGif() NOT sending pd.");
+            return;
+        }
         $j("<img/>")
             .on('error', errorCallback)
             .attr("src", url);
@@ -833,21 +837,51 @@ function PERTS_MODULE() {
     p.getYosemitePdUrl = function () {
         var embeddedData = ['variable', 'value', 'user', 'program',
                             'activity_ordinal'];
+        var isPreview = false;
         var pairs = embeddedData.map(function (ed) {
+            if (p.isPreview(ed)) {
+                isPreview = true;
+            }
             return ed + '=' + encodeURIComponent(perts.data(ed));
         });
-        return perts.domain() + '/api/put/pd/cross_site.gif?' + pairs.join('&');
+        if (isPreview) {
+            return '';
+        } else {
+            return perts.domain() + '/api/put/pd/cross_site.gif?' +
+                pairs.join('&');
+        }
     };
-
 
     p.getNeptunePdUrl = function () {
         var participantId = perts.data('participant_id');
         var embeddedData = ['key', 'value', 'survey_id'];
+        var isPreview = false;
         var pairs = embeddedData.map(function (ed) {
+            if (p.isPreview(ed)) {
+                isPreview = true;
+            }
             return ed + '=' + encodeURIComponent(perts.data(ed));
         });
-        return perts.domain() + '/api/participants/' + participantId +
-            '/data/cross_site.gif?' + pairs.join('&');
+        if (isPreview) {
+            return '';
+        } else {
+            return perts.domain() + '/api/participants/' + participant_id +
+                'data/cross_site.gif?' + pairs.join('&');
+        }
+    };
+
+    p.isPreview = function (key) {
+        // Don't load the url if the needed data hasn't been inlined. This
+        // happens when previewing a question in Qualtrics.
+        // We test for preview mode by looking for Qualtrics inlining code that
+        // still remains at page load. Note that we can't test for the whole
+        // thing using a string literal, or else the literal itself would get
+        // replaced during inlining!
+        var isPreview = p.data(key).indexOf('e://Field/') !== -1;
+        if (isPreview) {
+            p.console.log("PERTS detected preview data for " + key);
+        }
+        return isPreview;
     };
 
     // IE doesn't always have console.log, and, like the piece of fossilized
@@ -1107,28 +1141,13 @@ Qualtrics.SurveyEngine.addOnload(function () {
         '</div>'
     );
 
-
-    // Don't load the url if the needed data hasn't been inlined. This happens
-    // when previewing a question in Qualtrics.
-    // We test for preview mode by looking for Qualtrics inlining code that
-    // still remains at page load. Note that we can't test for the whole
-    // thing using a string literal, or else the literal itself would get
-    // replaced during inlining!
-    var isPreview = variableNode.value.indexOf('e://Field/') !== -1;
-
-    if (isPreview) {
-        // Notify developers that data sync has been skipped.
-        perts.console.log(
-            "PERTS detected that this page is being viewed as a " +
-            "preview and is NOT sending data back to the Platform.");
-    } else if (perts.disableAutomaticPdSave === true) {
+    if (perts.disableAutomaticPdSave) {
         // Notify developers that data sync has been skipped.
         perts.console.log(
             "Automatic saving has been DISABLED in this survey. Data is " +
             "NOT being sent back to the Platform unless explicitly saved " +
             "via perts.data().");
     } else {
-        // This isn't a preview; data is present. Cross site gif is enabled.
         // Get the data embedded in the header and construct an image tag that
         // will send the data back to the server.
         if (!perts.getPdUrl) {
