@@ -625,7 +625,7 @@ function PERTS_MODULE() {
             // back. This is the canonical way of triggering writes to Neptune.
             var maxAttempts = 3;
             var numAttempts = 0;
-            var url = p.getPdUrl();
+            var url = p.getPdUrl(varName);
             var retry = function () {
                 numAttempts += 1;
                 if (numAttempts < maxAttempts) {
@@ -852,22 +852,15 @@ function PERTS_MODULE() {
         }
     };
 
-    p.getNeptunePdUrl = function () {
+    p.getNeptunePdUrl = function (key) {
         var participantId = perts.data('participant_id');
-        var embeddedData = ['key', 'value', 'survey_id'];
-        var isPreview = false;
-        var pairs = embeddedData.map(function (ed) {
-            if (p.isPreview(ed)) {
-                isPreview = true;
-            }
-            return ed + '=' + encodeURIComponent(perts.data(ed));
-        });
-        if (isPreview) {
+        var surveyId = perts.data('survey_id');
+        if (p.isPreview(key)) {
             return '';
-        } else {
-            return perts.domain() + '/api/participants/' + participant_id +
-                'data/cross_site.gif?' + pairs.join('&');
         }
+        return perts.domain() + '/api/participants/' + participantId +
+            '/data/cross_site.gif?survey_id=' + surveyId + '&' +
+            key + '=' + encodeURIComponent(perts.data(key));
     };
 
     p.isPreview = function (key) {
