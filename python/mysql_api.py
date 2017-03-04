@@ -220,14 +220,19 @@ class MySQLApi(object):
             raise MySQLdb.Error(
                 "MySQLdb error on INSERT. Will be rolled back. {}".format(e))
 
-    def insert_row_dicts(self, table, row_dicts):
+    def insert_row_dicts(self, table, row_dicts,
+                         on_duplicate_key_update=None):
         """Insert one record or many records.
 
-        Accepts a dictionary of values to insert, or a list of such.
+        Args:
+            table: str name of the table
+            row_dicts: a single dictionary or a list of them
+            on_duplicate_key_update: tuple of the fields to update in the
+                existing row if there's a duplicate key error.
 
-        Returns True on success and an error message string on error.
+        Returns: True on success and an error message string on error.
         """
-        # Accepts a single dictionary or a list of them. Standardize to list.
+        # Standardize to list.
         if type(row_dicts) is not list:
             row_dicts = [row_dicts]
 
@@ -256,6 +261,26 @@ class MySQLApi(object):
         else:
             insert_method = 'executemany'
             params = value_tuples
+
+        if on_duplicate_key_update:
+            # Add the extra query syntax. This tells MySQL: when you encounter
+            # an inserted row that would result in a duplicate key, instead do
+            # an UPDATE on the existing row. The values set are: for each field
+            # named in on_duplicate_key_update, pull the corresponding value
+            # from VALUES.
+            # N.B. This is better than INSERT IGNORE because it records the new
+            # data and doesn't ignore other unrelated errors, and it's better
+            # than REPLACE INTO because that deletes the existing row and
+            # inserts a new one, which is a bigger disturbance to the indexes
+            # and can mess up the last inserted id.
+            # http://stackoverflow.com/a/21419029/385132
+            # http://stackoverflow.com/questions/2366813/on-duplicate-key-ignore
+            query_string += ' ON DUPLICATE KEY UPDATE {}'.format(
+                ', '.join(
+                    ['`{field}` = VALUES(`{field}`)'.format(field=f)
+                     for f in on_duplicate_key_update]
+                )
+            )
 
         self._cursor_retry_wrapper(insert_method, query_string, params)
 
