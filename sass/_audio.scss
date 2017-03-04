@@ -2,14 +2,18 @@
 #audio-toggle-wrapper {
   display: block;
   position: absolute;
-  right: 30px;
-  top: 22px;
-  height: 25px;
-  width: 120px;
+  right: 0;
+  top: 0;
+  height: 40px;
+  width: 150px;
   border: 5px solid;
   border-color: transparent;
   background: transparent;
   padding: 3px 17px 2px 3px;
+}
+
+.content-spacer #audio-toggle-wrapper {
+  margin-top: 30px;
 }
 
 #audio-toggle {
