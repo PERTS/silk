@@ -333,6 +333,10 @@ function PERTS_MODULE() {
     initializeDOMVamp(function () {
 
       var nextButton = $j('input[id="NextButton"]');
+      if (nextButton.length === 2) {
+        // Prefer the second one, from the page we're arriving on.
+        nextButton = $j(nextButton.get(1));
+      }
       var blockedNextButton;
       var blockedNavMessage;
 
