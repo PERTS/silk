@@ -78,8 +78,6 @@
 //     in questions-level JS. If using this in the header, wrap the call like
 //     this:
 //     Qualtrics.SurveyEngine.addOnload(function () { /* put call here */ });
-//     qapi - obj, the qualtrics question api object availabe as `this` within
-//         addOnLoad().
 //     message - str, e.g. "You can't continue because you haven't
 //         answered all the questions."
 //     seconds - int, num of seconds the block stays in place, after
@@ -88,8 +86,6 @@
 // perts.makeNextButtonRedirectToPlatform() - should be used on the last page
 //     of a survey. Sends users to the /done page of the platform AND also
 //     submits the Qualtrics survey in the background.
-//     qapi - obj, the qualtrics question api object availabe as `this` within
-//         addOnLoad().
 //     buttonText - str, what the button should read
 
 
@@ -312,8 +308,26 @@ function PERTS_MODULE() {
     }
   };
 
+  p.hideNextButton = function () {
+    var css = '#Page #Buttons #NextButton { display: none; }';
+
+    var style = $j('<style class="hide-next-button" type="text/css">');
+    var styleNode = style.get(0);
+    if (styleNode.styleSheet){
+      styleNode.styleSheet.cssText = css;
+    } else {
+      styleNode.appendChild(document.createTextNode(css));
+    }
+
+    $j('head').append(style);
+  };
+
+  p.showNextButton = function () {
+    $j('style.hide-next-button').remove();
+  };
+
   // Must be run on page load, because it references the DOM.
-  p.temporarilyBlockNavigation = function (qapi, message, seconds) {
+  p.temporarilyBlockNavigation = function (message, seconds) {
     debugText += "\n initializeBlockedNavigation()";
 
     initializeDOMVamp(function () {
@@ -337,7 +351,7 @@ function PERTS_MODULE() {
       // 30 pixels of height. Size the remaining margin to fit.
       marginBottom = marginBottom - 30;
 
-      qapi.hideNextButton();
+      p.hideNextButton();
 
       // Insert a new next button so we can put our own event handlers on
       // it. It's important to have the type NOT be "submit" b/c
@@ -376,7 +390,7 @@ function PERTS_MODULE() {
       setTimeout(function () {
         blockedNextButton.remove();
         blockedNavMessage.remove();
-        qapi.showNextButton();
+        p.showNextButton();
       }, seconds * 1000);
     });
   };
@@ -457,8 +471,8 @@ function PERTS_MODULE() {
     });
   };
 
-  p.makeNextButtonRedirectToPlatform = function (qapi, buttonText) {
-    qapi.hideNextButton();
+  p.makeNextButtonRedirectToPlatform = function (buttonText) {
+    p.hideNextButton();
     initializeDOMVamp(function () {
       var url = p.domain() + '/done' +
         '?program=' + p.programAbbreviation() +
@@ -731,6 +745,10 @@ function PERTS_MODULE() {
   p.pageTransition = function () {
     // Makes sure that any flash players are removed from the page.
     p.audioOff();
+
+    // Make sure any css added to hide the next button doesn't affect the next
+    // page.
+    p.showNextButton();
 
     // As long as this isn't IE 8 (which createjs doesn't support),
     // make sure any sounds registered with createjs are removed.
