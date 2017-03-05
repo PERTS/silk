@@ -753,7 +753,7 @@ function PERTS_MODULE() {
     var surveyId = perts.data('survey_id');
     return perts.domain() + '/api/participants/' + participantId +
       '/data/cross_site.gif?survey_id=' + surveyId + '&' +
-      key + '=' + encodeURIComponent(perts.data(key));
+      'key=' + key + '&value=' + encodeURIComponent(perts.data(key));
   };
 
   p.dataIsEmbedded = function (key) {
