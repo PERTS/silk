@@ -485,6 +485,11 @@ $split-width: 1000px;
     @include box-sizing(border-box);
   }
 
+  // For "other" text-entry boxes within multiple choice questions.
+  .MC input[type="TEXT"] {
+    border: 1px solid #ccc;
+  }
+
 }
 
 /* Hide timing questions during previews so they look more realistic. */
