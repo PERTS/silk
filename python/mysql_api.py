@@ -299,3 +299,14 @@ class MySQLApi(object):
         self.query(query_string, param_tuple=tuple(p))
 
         self._commit()
+
+    def delete_row(self, table, id_col, id):
+        """DELETE a row by id, assumed to be the unique key."""
+        query_string = 'DELETE FROM `{}` WHERE `{}` = %s'.format(
+            table,
+            id_col,
+        )
+
+        self.query(query_string, param_tuple=(id,))
+
+        self._commit()
