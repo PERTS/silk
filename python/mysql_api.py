@@ -217,8 +217,7 @@ class MySQLApi(object):
             logging.error("Last query run was:\n{}"
                           .format(self.cursor._last_executed))
             self.connection.rollback()
-            raise MySQLdb.Error(
-                "MySQLdb error on INSERT. Will be rolled back. {}".format(e))
+            raise MySQLdb.Error("Last query will be rolled back. {}".format(e))
 
     def insert_row_dicts(self, table, row_dicts,
                          on_duplicate_key_update=None):
@@ -291,12 +290,23 @@ class MySQLApi(object):
         query_string = 'UPDATE `{}` SET {} WHERE `{}` = %s'.format(
             table,
             ', '.join(['`{}` = %s'.format(k) for k in params.keys()]),
-            id_col
+            id_col,
         )
 
         p = params.values()
         p.append(id)
 
         self.query(query_string, param_tuple=tuple(p))
+
+        self._commit()
+
+    def delete_row(self, table, id_col, id):
+        """DELETE a row by id, assumed to be the unique key."""
+        query_string = 'DELETE FROM `{}` WHERE `{}` = %s'.format(
+            table,
+            id_col,
+        )
+
+        self.query(query_string, param_tuple=(id,))
 
         self._commit()
