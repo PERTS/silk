@@ -965,8 +965,8 @@ Qualtrics.SurveyEngine.addOnload(function () {
     '&scope=' + scopeNode.val() +
     '&program=' + programNode.val();
   // Include the activity ordinal, if present.
-  if (ordinalNode.length && ordinalNode.value) {
-    url += '&activity_ordinal=' + ordinalNode.value;
+  if (ordinalNode.length && ordinalNode.val()) {
+    url += '&activity_ordinal=' + ordinalNode.val();
   }
 
   // Don't load the url if the needed data hasn't been inlined OR if a user
