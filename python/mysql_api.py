@@ -103,7 +103,6 @@ class MySQLApi(object):
             credentials = {
                 'host': self.local_ip,
                 'port': self.local_port,
-                'db': self.db_name,
                 'user': self.local_user,
                 'passwd': self.local_password
             }
@@ -114,9 +113,10 @@ class MySQLApi(object):
                 'unix_socket': '/cloudsql/{app_id}:{instance_name}'.format(
                     app_id=app_identity.get_application_id(),
                     instance_name=self.cloud_sql_instance),
-                'db': self.db_name,
                 'user': self.cloud_sql_user,
             }
+        if self.db_name:
+            credentials['db'] = self.db_name
 
         # Although the docs say you can specify a `cursorclass` keyword
         # here as an easy way to get dictionaries out instead of lists, that
