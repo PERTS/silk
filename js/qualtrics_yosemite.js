@@ -458,11 +458,13 @@ function PERTS_MODULE() {
   };
 
   p.next = function () {
+    var event;  // intentionally undefined
     p.pageTransition();
     Qualtrics.SurveyEngine.navClick(event, 'NextButton');
   };
 
   p.previous = function () {
+    var event;  // intentionally undefined
     p.pageTransition();
     Qualtrics.SurveyEngine.navClick(event, 'PreviousButton');
   };
