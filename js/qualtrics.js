@@ -279,6 +279,7 @@ function PERTS_MODULE() {
     DOMInitialized = false,
     blockedButtonClass = 'blocked-next-button',
     navMessageClass = 'blocked-nav-message',
+    blockedNavCleanupTimeout,  // will be set in temporarilyBlockNavigation()
     debugText = '';
 
   // Qualtrics.SurveyEngine.addOnLoad does not run things in a predictable
@@ -391,7 +392,7 @@ function PERTS_MODULE() {
         })
         .appendTo('div[id="Buttons"]');
 
-      setTimeout(function () {
+      blockedNavCleanupTimeout = setTimeout(function () {
         blockedNextButton.remove();
         blockedNavMessage.remove();
         p.showNextButton();
@@ -755,6 +756,10 @@ function PERTS_MODULE() {
     // Make sure any css added to hide the next button doesn't affect the next
     // page.
     p.showNextButton();
+
+    // Clear any timeouts related to this page that might not have resolved. We
+    // don't want them to affect the new page.
+    clearTimeout(blockedNavCleanupTimeout);
 
     // As long as this isn't IE 8 (which createjs doesn't support),
     // make sure any sounds registered with createjs are removed.
