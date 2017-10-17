@@ -535,7 +535,7 @@ function PERTS_MODULE() {
   };
 
   // Getter/setter for qualtrics embedded data.
-  p.data = function (varName, value) {
+  p.data = function (varName, value, callback) {
     var input = $j('input[id="' + varName + '"]');
 
     if (input.length === 0) {
@@ -572,12 +572,12 @@ function PERTS_MODULE() {
         var retry = function () {
           numAttempts += 1;
           if (numAttempts < maxAttempts) {
-            p.crossSiteGif(url, retry);
+            p.crossSiteGif(url, callback, retry);
           } else {
             p.console.error("Failed to write pd after maxAttempts.");
           }
         };
-        p.crossSiteGif(url, retry);
+        p.crossSiteGif(url, callback, retry);
       }
     }
 
@@ -587,8 +587,9 @@ function PERTS_MODULE() {
     // Qualtrics.SurveyEngine.getEmbeddedData(), it doesn't appear to work!
   };
 
-  p.crossSiteGif = function (url, errorCallback) {
+  p.crossSiteGif = function (url, successCallback, errorCallback) {
     $j("<img/>")
+      .on('load', successCallback)
       .on('error', errorCallback)
       .attr("src", url);
   };
