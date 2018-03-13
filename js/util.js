@@ -284,6 +284,14 @@
         };
     }
 
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values
+    // https://github.com/tc39/proposal-object-values-entries/blob/master/polyfill.js
+    if (!Object.values) {
+	      Object.values = function values(O) {
+		        return Array.prototype.reduce(Array.prototype.keys(O), (v, k) => Array.prototype.concat(v, typeof k === 'string' && Object.prototype.propertyIsEnumerable(O, k) ? [O[k]] : []), []);
+	      };
+    }
+
     if (typeof String.prototype.trim !== 'function') {
         String.prototype.trim = function () {
             return this.replace(/^\s+|\s+$/g, '');
