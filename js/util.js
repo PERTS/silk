@@ -288,7 +288,7 @@
     // https://github.com/tc39/proposal-object-values-entries/blob/master/polyfill.js
     if (!Object.values) {
 	      Object.values = function values(O) {
-		        return Array.prototype.reduce(Reflect.ownKeys(O), (v, k) => Array.prototype.concat(v, typeof k === 'string' && Object.prototype.propertyIsEnumerable(O, k) ? [O[k]] : []), []);
+		        return Array.prototype.reduce(Object.keys(O), (v, k) => Array.prototype.concat(v, typeof k === 'string' && Object.prototype.propertyIsEnumerable(O, k) ? [O[k]] : []), []);
 	      };
     }
 
