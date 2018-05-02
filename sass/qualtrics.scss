@@ -451,7 +451,7 @@ $split-width: 1000px;
         position: relative;
     }
 
-    ul.perts-bullets li:after {
+    ul.perts-bullets li:before {
         content: "";
         height: 12px;
         width: 12px;
@@ -538,12 +538,12 @@ $split-width: 1000px;
 }
 
 /* Adjust placement of fake radio buttons for mobile. */
-#SurveyEngineBody.iOS .Skin .MC li input[type="radio"]::after {
+#SurveyEngineBody.iOS .Skin .MC li input[type="radio"]::before {
     top: -4px;
     left: -4px;
 }
-#SurveyEngineBody.iOS .Skin .MC li input[type="checkbox"]::after,
-#SurveyEngineBody.iOS .Skin .MC li input[type="checkbox"]:checked::after {
+#SurveyEngineBody.iOS .Skin .MC li input[type="checkbox"]::before,
+#SurveyEngineBody.iOS .Skin .MC li input[type="checkbox"]:checked::before {
     top: -2px;
 }
 #SurveyEngineBody.iOS .Skin .MC .QuestionBody .LabelWrapper label,
