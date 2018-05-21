@@ -160,12 +160,6 @@ $radio-size: 20px;
     @include border-radius(15px);
   }
 
-  /* Qualtrics adds weird list item markers using :before content on mobile */
-  .Skin ul li:before,
-  .Skin ul li:before {
-    content: none;
-  }
-
   /* Allows for scrolling MC questions on mobile devices */
   .Skin #Questions .QuestionOuter.MC fieldset .QuestionBody,
   .Skin #Questions .QuestionOuter.MC fieldset .QuestionBody {
