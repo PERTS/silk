@@ -537,8 +537,7 @@ function PERTS_MODULE() {
     var deferred = $j.Deferred();
     if (typeof window.createjs === 'undefined') {
       $j.getScript(
-        // p.domain() + 'silk/js/soundjs-1.0.0_flashaudioplugin.min.js',
-        'https://rawgit.com/chris-perts/bc0e280e5bfed19ad594523c71eed3e4/raw/bff22cd1701babf36fa16a40e0f745ba6ea7fb0b/soundjs-1.0.0_flashaudioplugin.min.js',
+        p.domain() + 'silk/js/soundjs-1.0.0_flashaudioplugin.min.js',
         function success() {
           debugText += "\n soundjs loaded and parsed";
           deferred.resolve();
