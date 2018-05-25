@@ -572,9 +572,6 @@ function PERTS_MODULE() {
     // Never play immediately if this is a mobile device.
     if (p.isMobile()) {
       options.playImmediately = false;
-      // // Disable the toggle while the audio file loads. We'll enable it
-      // // in the file load callback.
-      // p.disableAudioToggle();
     }
 
     audioArgs.fileName = fileName;
