@@ -537,7 +537,7 @@ function PERTS_MODULE() {
     var deferred = $j.Deferred();
     if (typeof window.createjs === 'undefined') {
       $j.getScript(
-        p.domain() + 'silk/js/soundjs-1.0.0_flashaudioplugin.min.js',
+        p.domain() + '/silk/js/soundjs-1.0.0_flashaudioplugin.min.js',
         function success() {
           debugText += "\n soundjs loaded and parsed";
           deferred.resolve();
