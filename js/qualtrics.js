@@ -217,6 +217,10 @@ function PERTS_MODULE() {
     blockedNavCleanupTimeout,  // will be set in temporarilyBlockNavigation()
     debugText = '';
 
+  p.debugText = function () {
+    return debugText;
+  };
+
   // Qualtrics.SurveyEngine.addOnLoad does not run things in a predictable
   // order in IE 8. That means we can't initialize DOM references once
   // "higher" in the code (i.e. here in this module) and expect it to run
