@@ -779,6 +779,13 @@ function PERTS_MODULE() {
       createjs.Sound.removeAllSounds();
     }
 
+    // If the audio toggle is being used, the one on the next page may be
+    // displayed overlapping the existing one. Hide the existing one. JFE will
+    // delete it from the page shortly. This means that the toggle will
+    // disappear briefly (~300ms?) between pages, but I'm guessing it looks
+    // better than misaligned overlapping stuff.
+    $j('div[id="audio-toggle-wrapper"]').hide();
+
     // Under JFE, the DOM is constantly being replaced from page to page,
     // but the javascript environment is unchanged. That means DOM node
     // references hang around, but their nodes are no longer relevant to
