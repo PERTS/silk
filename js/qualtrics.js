@@ -770,9 +770,10 @@ function PERTS_MODULE() {
     clearTimeout(blockedNavCleanupTimeout);
 
     // As long as this isn't IE 8 (which createjs doesn't support),
-    // make sure any sounds registered with createjs are removed.
+    // make sure any sounds or handlers registered with createjs are removed.
     if (typeof createjs !== 'undefined') {
       createjs.Sound.removeAllSounds();
+      createjs.Sound.removeAllEventListeners();
     }
 
     // If the audio toggle is being used, the one on the next page may be
