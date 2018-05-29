@@ -112,6 +112,10 @@ $radio-size: 20px;
             top: -1px; left: 10px;
           }
 
+          .iOS &:after {
+            top: 2px;
+          }
+
           // Use special class to detect when selected
           &.q-checked:after {
             background-color: $dark-blue;
@@ -177,9 +181,11 @@ $radio-size: 20px;
 
 
   .Skin .MC td input[type="radio"]::after,
-  .Skin .MC li input[type="radio"]::after {
-    top: -1px;
-    left: -1px;
+  .Skin .MC li input[type="radio"]::after,
+  .Skin .MC td input[type="radio"]:checked:after,
+  .Skin .MC li input[type="radio"]:checked:after {
+    top: -3px;
+    left: -6px;
   }
 }
 
