@@ -571,7 +571,7 @@ fieldset {
 // Accessibility Tool" recommends enabling export tags, but we don't want them
 // to show for all viewers. The following style rule is adapted from Bootstrap's
 // sr-only (screen reader only) rule.
-.ExportTags {
+.ExportTag {
   position: absolute;
   width: 1px;
   height: 1px;
