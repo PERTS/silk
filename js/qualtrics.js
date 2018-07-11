@@ -794,11 +794,17 @@ function PERTS_MODULE() {
 
   p.getPdUrl = function (key) {
     // For Neptune only!
+
+    // The testing flag is set by the Neptune Portal whenever someone bypasses
+    // readiness, e.g. by prefixing the participation code with "testing only".
+    // Record this state with any saved pd so we can filter it easily.
+    var testingParam = perts.data('testing') === 'true' ? '&testing=true' : '';
     var participantId = perts.data('participant_id');
     var surveyId = perts.data('survey_id');
     return perts.domain() + '/api/participants/' + participantId +
       '/data/cross_site.gif?survey_id=' + surveyId + '&' +
-      'key=' + key + '&value=' + encodeURIComponent(perts.data(key));
+      'key=' + key + '&value=' + encodeURIComponent(perts.data(key)) +
+      testingParam;
   };
 
   p.dataIsEmbedded = function (key) {
