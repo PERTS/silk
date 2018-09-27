@@ -129,6 +129,7 @@ html #SurveyEngineBody {
     .QuestionBody,
     .MC .QuestionText,
     .TE .QuestionText,
+    .DB .QuestionText,
     .Matrix .QuestionText {
         display: block;
         width: $standard-width - 2 * $gutter;
@@ -278,7 +279,8 @@ table span.LabelWrapper {
     font-weight: 700;
 }
 
-.Skin p {
+.Skin p,
+.Skin .QuestionText li {
     font-size: 21px;
     line-height: 30px;
     margin: 15px 0px;
