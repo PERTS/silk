@@ -944,15 +944,6 @@ Qualtrics.SurveyEngine.addOnload(function () {
     }
   });
 
-  // Set up footer.
-  var currentYear = (new Date()).getFullYear();
-  $j('div[id="Footer"]').html(
-    '<!-- Set in qualtrics.js -->' +
-    '<div class="foot-text">' +
-      '&copy;' + currentYear + ' Stanford University. All Rights Reserved.' +
-    '</div>'
-  );
-
   // Get the data embedded in the header and construct an image tag that will
   // send the data back to the server.
   var img = document.createElement('img');
