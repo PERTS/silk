@@ -233,6 +233,14 @@ html #SurveyEngineBody {
     p {
         margin: 25px 0;
     }
+
+    /*
+      See #18.
+      The following rule causes Qualtrics rankings to display immediately.
+    */
+    .RO .DND ul.NotEdited .rank {
+      visibility: visible;
+    }
 }
 
 li span.LabelWrapper {
