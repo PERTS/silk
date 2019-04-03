@@ -302,10 +302,8 @@ table span.LabelWrapper {
     font-weight: 500;
 }
 
-.instruction-text {
-    font-size: 18px;
-    color: $light-font-color;
-    font-style: italic;
+.instruction-text, .Skin p.instruction-text {
+    font-weight: 500;
     margin-bottom: 25px;
 }
 
