@@ -15,7 +15,7 @@ set -e
 # Find gitleaks releases here: https://github.com/zricethezav/gitleaks/releases
 export GITLEAKS_RELEASE="7.2.2"
 export GITLEAKS_CMD="gitleaks-${GITLEAKS_RELEASE}"
-export GITLEAKS_CONFIG="https://raw.githubusercontent.com/PERTS/silk/ttd-gitleaks/gitleaks/gitleaks.toml"
+export GITLEAKS_CONFIG="https://raw.githubusercontent.com/PERTS/silk/HEAD/gitleaks/gitleaks.toml"
 
 # Binary for local/mac development environment
 export GITLEAKS_BINARY="https://github.com/zricethezav/gitleaks/releases/download/v${GITLEAKS_RELEASE}/gitleaks-darwin-amd64"
