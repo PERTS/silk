@@ -160,8 +160,19 @@ title = "gitleaks config"
 [allowlist]
   description = "Global allowlist files"
   paths = [
+    '''.git''',
     # Python Libraries
+    '''apiclient''',
+    '''bs4''',
+    '''cloudstorage''',
+    '''dateutil''',
+    '''httplib2''',
     '''lib''',
+    '''mapreduce''',
+    '''markdown''',
+    '''oauth2client''',
+    '''passlib''',
+    '''webtest''',
     # NPM Modules
     '''node_modules''',
   ]
@@ -170,7 +181,7 @@ title = "gitleaks config"
 		'''^gitleaks-[0-9\.]+$''',
     # gitleaks config
     '''^\.?gitleaks.toml$''',
-	  '''(.*?)(png|jpg|gif|doc|docx|pdf|bin|xls|pyc|zip)$''',
+	  '''(.*?)(png|jpg|gif|doc|docx|pdf|bin|xls|pyc|zip|mp3)$''',
 	  '''(go.mod|go.sum)$''',
   ]
   regexes = [
