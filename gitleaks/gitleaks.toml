@@ -175,6 +175,8 @@ title = "gitleaks config"
     '''webtest''',
     # NPM Modules
     '''node_modules''',
+    # Lock files
+    '''yarn.lock''',
     # These are safe/allowed places to store things that
     # gitleaks would otherwise flag because dirs with these names
     # MUST be ignored by all consuming projects.
