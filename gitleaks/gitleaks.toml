@@ -191,9 +191,15 @@ title = "gitleaks config"
     '''^\.?gitleaks.toml$''',
 	  '''(.*?)(png|jpg|gif|doc|docx|pdf|bin|xls|pyc|zip|mp3)$''',
 	  '''(go.mod|go.sum)$''',
+    # Sublime Text
+    '''\.sublime-workspace$''',
   ]
   regexes = [
     # neptune: Hard-coded so localhost works.
     # Key is limited by http referrer to localhost:8080/* and localhost:8888/*.
-  	'''AIzaSyCJMqfce0WDD1rW9ZleUwDUwasXzQVIwGo'''
+  	'''AIzaSyCJMqfce0WDD1rW9ZleUwDUwasXzQVIwGo''',
+  	# firebase auth api key for tritonplatform:
+  	'''AIzaSyDptGmaDNdz1oQNmAfZzlf7Ccawd0L76XE''',
+  	# firebase auth api key for triton-dev:
+  	'''AIzaSyA4sB4P9lXUUGdrL1WU7I7sQIzPIOq-8D0''',
   ]
