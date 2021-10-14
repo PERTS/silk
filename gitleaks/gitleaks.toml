@@ -184,13 +184,15 @@ title = "gitleaks config"
     '''data''',
     '''secrets''',
   ]
-	files = [
+  files = [
     # gitleaks binary
-		'''^gitleaks-[0-9\.]+$''',
+    '''^gitleaks-[0-9\.]+$''',
     # gitleaks config
     '''^\.?gitleaks.toml$''',
-	  '''(.*?)(png|jpg|gif|doc|docx|pdf|bin|xls|pyc|zip|mp3)$''',
-	  '''(go.mod|go.sum)$''',
+    '''(.*?)(png|jpg|gif|doc|docx|pdf|bin|xls|pyc|zip|mp3)$''',
+    '''(go.mod|go.sum)$''',
+    # Sublime Text
+    '''\.sublime-workspace$''',
   ]
   regexes = [
     # neptune: Hard-coded so localhost works.
