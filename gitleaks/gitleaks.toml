@@ -197,5 +197,7 @@ title = "gitleaks config"
   regexes = [
     # neptune: Hard-coded so localhost works.
     # Key is limited by http referrer to localhost:8080/* and localhost:8888/*.
-  	'''AIzaSyCJMqfce0WDD1rW9ZleUwDUwasXzQVIwGo'''
+  	'''AIzaSyCJMqfce0WDD1rW9ZleUwDUwasXzQVIwGo''',
+	# Exclude GitHub Public SSH Key
+	'''github.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjsh'''
   ]
